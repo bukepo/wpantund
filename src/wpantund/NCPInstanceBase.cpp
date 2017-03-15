@@ -124,8 +124,10 @@ NCPInstanceBase::NCPInstanceBase(const Settings& settings):
 	mSerialAdapter = mRawSerialAdapter;
 
 	mPrimaryInterface = boost::shared_ptr<TunnelIPv6Interface>(new TunnelIPv6Interface(wpan_interface_name));
-	mPrimaryInterface->mAddressWasAdded.connect(boost::bind(&NCPInstanceBase::address_was_added, this, _1, _2));
-	mPrimaryInterface->mAddressWasRemoved.connect(boost::bind(&NCPInstanceBase::address_was_removed, this, _1, _2));
+	memcpy(mHostV6Identifier, mPrimaryInterface->get_iid(), sizeof(mHostV6Identifier));
+
+	//mPrimaryInterface->mAddressWasAdded.connect(boost::bind(&NCPInstanceBase::address_was_added, this, _1, _2));
+	//mPrimaryInterface->mAddressWasRemoved.connect(boost::bind(&NCPInstanceBase::address_was_removed, this, _1, _2));
 
 	set_ncp_power(true);
 

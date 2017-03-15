@@ -272,6 +272,13 @@ protected:
 		struct in6_addr mNCPMeshLocalAddress;
 	};
 	struct in6_addr mNCPLinkLocalAddress;
+	union {
+		struct {
+			uint8_t mHostV6Prefix[8];
+			uint8_t mHostV6Identifier[8];
+		};
+		struct in6_addr mHostMeshLocalAddress;
+	};
 
 	WPAN::NetworkInstance mCurrentNetworkInstance;
 

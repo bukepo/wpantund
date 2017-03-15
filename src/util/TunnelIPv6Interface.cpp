@@ -419,3 +419,9 @@ TunnelIPv6Interface::write(const void* data, size_t len)
 #endif
 	return nl::UnixSocket::write(data, len);
 }
+
+const uint8_t*
+TunnelIPv6Interface::get_iid()
+{
+	return tunnel_get_iid(mFDRead);
+}

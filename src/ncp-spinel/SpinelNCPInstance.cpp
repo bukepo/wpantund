@@ -1083,11 +1083,19 @@ SpinelNCPInstance::handle_ncp_spinel_value_is(spinel_prop_key_t key, const uint8
 			memcpy((void*)mNCPMeshLocalAddress.s6_addr, (void*)addr->s6_addr, sizeof(mNCPMeshLocalAddress));
 			signal_property_changed(kWPANTUNDProperty_IPv6MeshLocalAddress, in6_addr_to_string(*addr));
 			add_address(mNCPMeshLocalAddress);
+
+			if (buffer_is_nonzero(mHostMeshLocalAddress.s6_addr, sizeof(mHostMeshLocalAddress))) {
+				mPrimaryInterface->remove_address(&mHostMeshLocalAddress);
+			}
+			memcpy((void*)mHostV6Prefix, (void*)addr, sizeof(mHostV6Prefix));
+			syslog(LOG_INFO,"[-HOST-]: Mesh Local Address Changed \"%s\"", in6_addr_to_string(mHostMeshLocalAddress).c_str());
+			mPrimaryInterface->add_address(&mHostMeshLocalAddress);
 		}
 
 	} else if (key == SPINEL_PROP_IPV6_ML_PREFIX) {
 		struct in6_addr *addr = NULL;
 		spinel_datatype_unpack(value_data_ptr, value_data_len, "6", &addr);
+		syslog(LOG_INFO,"[-NCP-]: Mesh Local Prefix Changed \"%s\"", in6_addr_to_string(*addr).c_str());
 		if (addr
 		 && buffer_is_nonzero(addr->s6_addr, 8)
 		 && (0 != memcmp(mNCPV6Prefix, addr, sizeof(mNCPV6Prefix)))
@@ -1095,6 +1103,7 @@ SpinelNCPInstance::handle_ncp_spinel_value_is(spinel_prop_key_t key, const uint8
 			if (buffer_is_nonzero(mNCPMeshLocalAddress.s6_addr, sizeof(mNCPMeshLocalAddress))) {
 				remove_address(mNCPMeshLocalAddress);
 			}
+
 			memcpy((void*)mNCPV6Prefix, (void*)addr, sizeof(mNCPV6Prefix));
 			struct in6_addr prefix_addr (mNCPMeshLocalAddress);
 			// Zero out the lower 64 bits.

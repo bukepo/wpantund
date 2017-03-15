@@ -53,6 +53,7 @@ extern int tunnel_add_route(
     int fd, const uint8_t route[16], int prefixlen);
 extern int tunnel_remove_route(
     int fd, const uint8_t route[16], int prefixlen);
+extern const uint8_t* tunnel_get_iid(int fd);
 __END_DECLS
 
 

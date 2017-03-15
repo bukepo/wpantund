@@ -62,7 +62,7 @@ NCPInstanceBase::clear_nonpermanent_global_addresses()
 				continue;
 			}
 
-			mPrimaryInterface->remove_address(&iter->first);
+			//mPrimaryInterface->remove_address(&iter->first);
 			mGlobalAddresses.erase(iter);
 
 			// The following assignment is needed to avoid
@@ -89,7 +89,7 @@ NCPInstanceBase::restore_global_addresses()
 		}
 		mGlobalAddresses.insert(*iter);
 
-		mPrimaryInterface->add_address(&iter->first);
+		//mPrimaryInterface->add_address(&iter->first);
 	}
 }
 
@@ -103,7 +103,7 @@ NCPInstanceBase::add_address(const struct in6_addr &address, uint8_t prefix, uin
 		entry = mGlobalAddresses[address];
 	} else {
 		syslog(LOG_INFO, "Adding IPv6 Address...");
-		mPrimaryInterface->add_address(&address);
+		//mPrimaryInterface->add_address(&address);
 	}
 
 	entry.mValidLifetime = valid_lifetime;
@@ -124,7 +124,7 @@ void
 NCPInstanceBase::remove_address(const struct in6_addr &address)
 {
 	mGlobalAddresses.erase(address);
-	mPrimaryInterface->remove_address(&address);
+	//mPrimaryInterface->remove_address(&address);
 }
 
 bool

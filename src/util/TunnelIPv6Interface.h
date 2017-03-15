@@ -59,6 +59,7 @@ public:
 
 	bool add_route(const struct in6_addr *route, int prefixlen = 64);
 	bool remove_route(const struct in6_addr *route, int prefixlen = 64);
+	const uint8_t* get_iid();
 
 	virtual void reset();
 	virtual ssize_t write(const void* data, size_t len);

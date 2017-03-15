@@ -642,3 +642,9 @@ bail:
 
     return ret;
 }
+
+const uint8_t* tunnel_get_iid(int fd)
+{
+	static uint8_t iid[8] = {0,0,0,0,0,0,0,8};
+	return iid;
+}
