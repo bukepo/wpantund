@@ -79,6 +79,9 @@
 #define kWPANTUNDProperty_IPv6MeshLocalPrefix    "IPv6:MeshLocalPrefix"
 #define kWPANTUNDProperty_IPv6AllAddresses       "IPv6:AllAddresses"
 
+#define kWPANTUNDProperty_StreamNet           "Stream:Net"
+#define kWPANTUNDProperty_StreamNetInsecure   "Stream:NetInsecure"
+
 #define kWPANTUNDProperty_ThreadRLOC16                   "Thread:RLOC16"
 #define kWPANTUNDProperty_ThreadRouterID                 "Thread:RouterID"
 #define kWPANTUNDProperty_ThreadLeaderAddress            "Thread:Leader:Address"

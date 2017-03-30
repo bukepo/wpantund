@@ -961,6 +961,17 @@ SpinelNCPInstance::set_property(
 				.finish()
 			);
 
+		} else if (strcaseequal(key.c_str(), kWPANTUNDProperty_StreamNet)) {
+			Data packet = any_to_data(value);
+
+			Data command = SpinelPackData(SPINEL_FRAME_PACK_CMD_PROP_VALUE_SET(SPINEL_DATATYPE_DATA_WLEN_S), SPINEL_PROP_STREAM_NET, packet.data(), packet.size());
+
+			start_new_task(SpinelNCPTaskSendCommand::Factory(this)
+				.set_callback(cb)
+				.add_command(command)
+				.finish()
+			);
+
 		} else {
 			NCPInstanceBase::set_property(key, value, cb);
 		}
