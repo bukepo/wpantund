@@ -1554,9 +1554,8 @@ SpinelNCPInstance::handle_ncp_spinel_value_inserted(spinel_prop_key_t key, const
 					if (0 != memcmp(rloc_bytes, addr->s6_addr+8, sizeof(rloc_bytes))) {
 						handle_ncp_spinel_value_is(SPINEL_PROP_IPV6_ML_ADDR, addr->s6_addr, sizeof(*addr));
 					}
-				} else {
-					add_address(*addr, 64, valid_lifetime, preferred_lifetime);
 				}
+				add_address(*addr, 64, valid_lifetime, preferred_lifetime);
 			}
 	} else if (key == SPINEL_PROP_THREAD_ON_MESH_NETS) {
 		struct in6_addr *addr = NULL;
