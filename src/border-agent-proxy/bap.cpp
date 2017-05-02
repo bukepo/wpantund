@@ -33,7 +33,6 @@
 
 extern "C" {
 #include "wpanctl-utils.h"
-#include "bap-utils.h"
 #include "wpan-dbus-v1.h"
 #include "assert-macros.h"
 }

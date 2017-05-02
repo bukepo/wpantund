@@ -86,4 +86,12 @@
 
 #define WPANTUND_IF_CMD_MFG                   "Mfg"
 
+// ============================================================================
+// Border Agent API Interface
+
+#define BORDER_AGENT_DBUS_NAME                "ot.ba"
+#define BORDER_AGENT_DBUS_OBJECT              "/ot/ba"
+#define BORDER_AGENT_DBUS_INTERFACE           "ot.ba"
+#define BORDER_AGENT_DBUS_METHOD_RECEIVE      "Receive"
+
 #endif

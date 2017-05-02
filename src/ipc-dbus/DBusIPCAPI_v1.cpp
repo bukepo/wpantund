@@ -33,8 +33,6 @@
 
 #include <dbus/dbus.h>
 
-#include "border-agent-proxy/bap-utils.h"
-
 #include "wpan-dbus-v1.h"
 #include "DBusIPCAPI_v1.h"
 #include "wpan-error.h"

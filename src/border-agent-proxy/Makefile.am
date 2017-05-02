@@ -33,7 +33,6 @@ libbap_la_SOURCES = \
 	../wpanctl/wpanctl-utils.c \
 	bap.cpp \
 	bap.h \
-	bap-utils.h \
 	$(NULL)
 
 libbap_la_LIBADD = \
