@@ -47,7 +47,7 @@ extern "C" {
  */
 const char* kDBusMatchPropChanged = "type='signal',interface='"WPANTUND_DBUS_APIv1_INTERFACE"',"
                                     "member='"WPANTUND_IF_SIGNAL_PROP_CHANGED"'";
-const char* kDBusMatchStreamReceive = "type='method',interface='"BORDER_AGENT_DBUS_INTERFACE"',"
+const char* kDBusMatchStreamReceive = "type='method_call',interface='"BORDER_AGENT_DBUS_INTERFACE"',"
                                       "member='"BORDER_AGENT_DBUS_METHOD_RECEIVE"',"
                                       "path='"BORDER_AGENT_DBUS_OBJECT"'";
 
@@ -66,16 +66,19 @@ static WatchMap sWatches;
 DBusHandlerResult handleProperyChangedSingal(DBusConnection *connection, DBusMessage *message, void *user_data)
 {
     DBusMessageIter iter;
-    int ret;
-    const char* key;
-    const uint8_t* pskc;
+    DBusHandlerResult result = DBUS_HANDLER_RESULT_HANDLED;
+    const char* key = NULL;
+    const uint8_t* pskc = NULL;
 
-    printf("handle property changed\n");
-    require(dbus_message_is_signal(message, WPANTUND_DBUS_APIv1_INTERFACE, WPANTUND_IF_SIGNAL_PROP_CHANGED), bail);
+    syslog(LOG_DEBUG, "dbus message received");
+    require_action(dbus_message_is_signal(message, WPANTUND_DBUS_APIv1_INTERFACE, WPANTUND_IF_SIGNAL_PROP_CHANGED),
+            bail, result = DBUS_HANDLER_RESULT_NOT_YET_HANDLED);
 
-    dbus_message_iter_init(message, &iter);
+    require(dbus_message_iter_init(message, &iter), bail);
     dbus_message_iter_get_basic(&iter, &key);
     require(key && !strcmp(key, kWPANTUNDProperty_NetworkPSKc), bail);
+    syslog(LOG_INFO, "property %s changed", key);
+
     dbus_message_iter_next(&iter);
     {
         DBusMessageIter subIter;
@@ -87,7 +90,7 @@ DBusHandlerResult handleProperyChangedSingal(DBusConnection *connection, DBusMes
     sPSKcHandler(pskc, user_data);
 
 bail:
-    return DBUS_HANDLER_RESULT_HANDLED;
+    return result;
 }
 
 DBusHandlerResult dbus_message_handler(
@@ -235,8 +238,10 @@ int otBorderAgentProxyStart(PacketHandler aPacketHandler, PSKcHandler aPSKcHandl
             NULL, NULL), bail, ret = -1);
 
     dbus_bus_add_match(sConn, kDBusMatchPropChanged, &error);
+    require_action(!dbus_error_is_set(&error), bail, ret = -1);
     dbus_bus_add_match(sConn, kDBusMatchStreamReceive, &error);
-    require(!dbus_error_is_set(&error), bail);
+    require_action(!dbus_error_is_set(&error), bail, ret = -1);
+
     require_action(dbus_connection_add_filter(sConn, handleProperyChangedSingal, aContext, NULL),
                    bail, ret = -1);
 
