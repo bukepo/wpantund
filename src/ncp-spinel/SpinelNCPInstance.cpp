@@ -1474,9 +1474,6 @@ SpinelNCPInstance::property_get_value(
 			SIMPLE_SPINEL_GET(SPINEL_PROP_JAM_DETECTED, SPINEL_DATATYPE_BOOL_S);
 		}
 
-	} else if (strcaseequal(key.c_str(), kWPANTUNDProperty_UdpProxyEnabled)) {
-		SIMPLE_SPINEL_GET(SPINEL_PROP_THREAD_UDP_PROXY_ENABLED, SPINEL_DATATYPE_BOOL_S);
-
 	} else if (strcaseequal(key.c_str(), kWPANTUNDProperty_JamDetectionEnable)) {
 		if (!mCapabilities.count(SPINEL_CAP_JAM_DETECT)) {
 			cb(kWPANTUNDStatus_FeatureNotSupported, boost::any(std::string("Jam Detection Feature Not Supported")));
@@ -2274,22 +2271,6 @@ SpinelNCPInstance::property_set_value(
 				.add_command(SpinelPackData(SPINEL_FRAME_PACK_CMD_PROP_VALUE_SET(SPINEL_DATATYPE_UINT8_S), SPINEL_PROP_THREAD_MODE, mode))
 				.finish()
 			);
-		} else if (strcaseequal(key.c_str(), kWPANTUNDProperty_UdpProxyEnabled)) {
-			bool isEnabled = any_to_bool(value);
-			Data command = SpinelPackData(SPINEL_FRAME_PACK_CMD_PROP_VALUE_SET(SPINEL_DATATYPE_BOOL_S), SPINEL_PROP_THREAD_UDP_PROXY_ENABLED, isEnabled);
-
-			mSettings[kWPANTUNDProperty_UdpProxyEnabled] = SettingsEntry(command, SPINEL_CAP_THREAD_UDP_PROXY);
-
-			if (!mCapabilities.count(SPINEL_CAP_THREAD_UDP_PROXY))
-			{
-				cb(kWPANTUNDStatus_FeatureNotSupported);
-			} else {
-				start_new_task(SpinelNCPTaskSendCommand::Factory(this)
-					.set_callback(cb)
-					.add_command(command)
-					.finish()
-				);
-			}
 
 		} else if (strcaseequal(key.c_str(), kWPANTUNDProperty_MACWhitelistEnabled)) {
 			bool isEnabled = any_to_bool(value);
