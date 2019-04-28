@@ -59,7 +59,6 @@ nl::wpantund::SpinelNCPTaskJoin::vprocess_event(int event, va_list args)
 
 	EH_BEGIN();
 
-
 	if (!mInstance->mEnabled) {
 		ret = kWPANTUNDStatus_InvalidWhenDisabled;
 		finish(ret);

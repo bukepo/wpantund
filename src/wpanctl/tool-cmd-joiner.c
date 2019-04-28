@@ -43,7 +43,7 @@ static const arg_list_item_t joiner_option_list[] = {
 	{'d', "stop", NULL, "Stop joiner's commissioning process"},
 	{'a', "attach", NULL, "Attach to the commissioned thread network"},
 	{'s', "state", NULL, "Joiner state"},
-	{0}
+	{0, NULL, NULL, NULL}
 };
 
 int tool_cmd_joiner(int argc, char* argv[])
@@ -57,7 +57,6 @@ int tool_cmd_joiner(int argc, char* argv[])
 	DBusMessageIter iter;
 	DBusMessageIter dict_iter;
 	DBusError error;
-	const char *empty_string = "";
 	const char *psk = NULL;
 	const char *provisioning_url = NULL;
 	const char *vendor_name = NULL;
@@ -65,7 +64,6 @@ int tool_cmd_joiner(int argc, char* argv[])
 	const char *vendor_sw_version = NULL;
 	const char *vendor_data = NULL;
 	const char *property_joiner_state = kWPANTUNDProperty_ThreadJoinerState;
-	dbus_bool_t action = false;
 
 	dbus_error_init(&error);
 
@@ -103,7 +101,7 @@ int tool_cmd_joiner(int argc, char* argv[])
 
 		case 't':
 			//timeout
-			timeout = strtol(optarg, NULL, 0);
+			timeout = (int)strtol(optarg, NULL, 0);
 			break;
 
 		case 's':
@@ -369,7 +367,7 @@ int tool_cmd_joiner(int argc, char* argv[])
 				fprintf(stdout, ", VendorData:\"%s\"", vendor_data);
 			}
 
-			fprintf(stdout, "\n", psk);
+			fprintf(stdout, "\n");
 
 			goto bail;
 

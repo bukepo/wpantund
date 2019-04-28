@@ -231,6 +231,9 @@ bail:
 int
 tunnel_set_hwaddr(int fd, uint8_t *addr, int addr_len)
 {
+	(void)fd;
+	(void)addr;
+	(void)addr_len;
 	// TODO: Implement me
 	// Maybe also TUNSETLINK
 	// Should use SIOCSIFHWADDR...?

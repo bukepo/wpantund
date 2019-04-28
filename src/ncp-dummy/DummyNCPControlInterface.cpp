@@ -61,6 +61,8 @@ DummyNCPControlInterface::join(
 	const ValueMap& options,
 	CallbackWithStatus cb
 ) {
+	(void)options;
+
 	// TODO: Writeme!
 	cb(kWPANTUNDStatus_FeatureNotImplemented);
 }
@@ -70,6 +72,7 @@ DummyNCPControlInterface::form(
 	const ValueMap& options,
 	CallbackWithStatus cb
 ) {
+	(void)options;
 
 	// TODO: Writeme!
 	cb(kWPANTUNDStatus_FeatureNotImplemented);
@@ -99,6 +102,9 @@ DummyNCPControlInterface::reset(CallbackWithStatus cb)
 void
 DummyNCPControlInterface::begin_net_wake(uint8_t data, uint32_t flags, CallbackWithStatus cb)
 {
+	(void)data;
+	(void)flags;
+
 	// TODO: Writeme!
 	cb(kWPANTUNDStatus_FeatureNotImplemented);
 }
@@ -139,6 +145,11 @@ DummyNCPControlInterface::add_on_mesh_prefix(
 	bool stable,
 	CallbackWithStatus cb
 ) {
+	(void)prefix;
+	(void)prefix_len;
+	(void)flags;
+	(void)priority;
+	(void)stable;
 	cb(kWPANTUNDStatus_FeatureNotImplemented);
 }
 
@@ -148,6 +159,8 @@ DummyNCPControlInterface::remove_on_mesh_prefix(
 	uint8_t prefix_len,
 	CallbackWithStatus cb
 ) {
+	(void)prefix;
+	(void)prefix_len;
 	cb(kWPANTUNDStatus_FeatureNotImplemented);
 }
 
@@ -160,6 +173,11 @@ DummyNCPControlInterface::add_external_route(
 	bool stable,
 	CallbackWithStatus cb
 ) {
+	(void)prefix;
+	(void)prefix_len_in_bits;
+	(void)domain_id;
+	(void)priority;
+	(void)stable;
 	cb(kWPANTUNDStatus_FeatureNotImplemented);
 }
 
@@ -170,26 +188,35 @@ DummyNCPControlInterface::remove_external_route(
 	int domain_id,
 	CallbackWithStatus cb
 ) {
+	(void)prefix;
+	(void)prefix_len_in_bits;
+	(void)domain_id;
 	cb(kWPANTUNDStatus_FeatureNotImplemented);
 }
 
-void 
+void
 DummyNCPControlInterface::add_service(
-	uint32_t enterprise_number, 
+	uint32_t enterprise_number,
 	const Data &service_data,
-	bool stable, 
+	bool stable,
 	const Data &server_data,
 	CallbackWithStatus cb
 ) {
+	(void)enterprise_number;
+	(void)service_data;
+	(void)stable;
+	(void)server_data;
 	cb(kWPANTUNDStatus_FeatureNotImplemented);
 }
 
-void 
+void
 DummyNCPControlInterface::remove_service(
-	uint32_t enterprise_number, 
-	const Data &service_data, 
+	uint32_t enterprise_number,
+	const Data &service_data,
 	CallbackWithStatus cb
 ) {
+	(void)enterprise_number;
+	(void)service_data;
 	cb(kWPANTUNDStatus_FeatureNotImplemented);
 }
 
@@ -206,6 +233,8 @@ DummyNCPControlInterface::joiner_commissioning(
 	const ValueMap &options,
 	CallbackWithStatus cb
 ) {
+	(void)action;
+	(void)options;
 	cb(kWPANTUNDStatus_FeatureNotImplemented);
 }
 
@@ -216,6 +245,9 @@ DummyNCPControlInterface::commissioner_add_joiner(
 	const char *psk,
 	CallbackWithStatus cb
 ) {
+	(void)eui64;
+	(void)timeout;
+	(void)psk;
 	cb(kWPANTUNDStatus_FeatureNotImplemented);
 }
 
@@ -225,6 +257,8 @@ DummyNCPControlInterface::commissioner_remove_joiner(
 	uint32_t timeout,
 	CallbackWithStatus cb
 ) {
+	(void)eui64;
+	(void)timeout;
 	cb(kWPANTUNDStatus_FeatureNotImplemented);
 }
 
@@ -236,6 +270,10 @@ DummyNCPControlInterface::commissioner_send_announce_begin(
 	const struct in6_addr& dest,
 	CallbackWithStatus cb
 ) {
+	(void)channel_mask;
+	(void)count;
+	(void)period;
+	(void)dest;
 	cb(kWPANTUNDStatus_FeatureNotImplemented);
 }
 
@@ -248,6 +286,11 @@ DummyNCPControlInterface::commissioner_send_energy_scan_query(
 	const struct in6_addr& dest,
 	CallbackWithStatus cb
 ) {
+	(void)channel_mask;
+	(void)count;
+	(void)period;
+	(void)scan_duration;
+	(void)dest;
 	cb(kWPANTUNDStatus_FeatureNotImplemented);
 }
 
@@ -258,6 +301,9 @@ DummyNCPControlInterface::commissioner_send_pan_id_query(
 	const struct in6_addr& dest,
 	CallbackWithStatus cb
 ) {
+	(void)pan_id;
+	(void)channel_mask;
+	(void)dest;
 	cb(kWPANTUNDStatus_FeatureNotImplemented);
 }
 
@@ -270,6 +316,10 @@ DummyNCPControlInterface::permit_join(
 	CallbackWithStatus cb
 )
 {
+	(void)seconds;
+	(void)traffic_type;
+	(void)traffic_port;
+	(void)network_wide;
 	// TODO: Writeme!
 	cb(kWPANTUNDStatus_FeatureNotImplemented);
 }
@@ -279,6 +329,7 @@ DummyNCPControlInterface::netscan_start(
 	const ValueMap& options,
 	CallbackWithStatus cb
 ) {
+	(void)options;
 	cb(kWPANTUNDStatus_FeatureNotImplemented); // TODO: Start network scan
 }
 
@@ -287,6 +338,7 @@ DummyNCPControlInterface::mfg(
 	const std::string& mfg_command,
 	CallbackWithStatusArg1 cb
 ) {
+	(void)mfg_command;
 	cb(kWPANTUNDStatus_FeatureNotImplemented, 0); // TODO: Start mfg run
 }
 
@@ -301,6 +353,7 @@ DummyNCPControlInterface::energyscan_start(
 	const ValueMap& options,
 	CallbackWithStatus cb
 ) {
+	(void)options;
 	cb(kWPANTUNDStatus_FeatureNotImplemented);
 }
 
@@ -331,6 +384,7 @@ DummyNCPControlInterface::get_ncp_instance()
 void
 DummyNCPControlInterface::pcap_to_fd(int fd, CallbackWithStatus cb)
 {
+	(void)fd;
 	cb(kWPANTUNDStatus_FeatureNotImplemented);
 }
 
@@ -388,11 +442,15 @@ DummyNCPControlInterface::property_remove_value(
 void
 DummyNCPControlInterface::peek(uint32_t address, uint16_t count, CallbackWithStatusArg1 cb)
 {
+	(void)address;
+	(void)count;
 	cb(kWPANTUNDStatus_FeatureNotImplemented, std::string("No peeking!"));
 }
 
 void
 DummyNCPControlInterface::poke(uint32_t address, Data bytes, CallbackWithStatus cb)
 {
+	(void)address;
+	(void)bytes;
 	cb(kWPANTUNDStatus_FeatureNotImplemented);
 }

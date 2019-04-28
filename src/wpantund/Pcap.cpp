@@ -172,7 +172,6 @@ PcapManager::insert_fd(int fd)
 {
 	int ret = -1;
 	int save_errno;
-	int set = 1;
 	PcapGlobalHeader header;
 
 	// Prepare the PCAP header.
@@ -213,7 +212,7 @@ int
 PcapManager::new_fd(void)
 {
 	int ret = -1;
-	int save_errno;
+	int save_errno = 0;
 	int fd[2] = { -1, -1 };
 
 	ret = socketpair(PF_UNIX, SOCK_DGRAM, 0, fd);
@@ -310,6 +309,8 @@ bail:
 int
 PcapManager::update_fd_set(fd_set *read_fd_set, fd_set *write_fd_set, fd_set *error_fd_set, int *max_fd, cms_t *timeout)
 {
+	(void)write_fd_set;
+	(void)timeout;
 	std::set<int>::const_iterator iter;
 
 	for ( iter  = mFDSet.begin()
@@ -341,7 +342,7 @@ PcapManager::process(void)
 		fd_set fds;
 		int max_fd(-1);
 		int fds_ready;
-		struct timeval timeout = {};
+		struct timeval timeout = {0, 0};
 
 		FD_ZERO(&fds);
 

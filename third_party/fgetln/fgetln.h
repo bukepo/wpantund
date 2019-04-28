@@ -40,9 +40,11 @@
 #include <stdio.h>
 
 #if !defined(HAVE_FGETLN)
-#define HAVE_FGETLN \
-	defined(__DARWIN_C_LEVEL) && \
-	(__DARWIN_C_LEVEL >= __DARWIN_C_FULL)
+#if defined(__DARWIN_C_LEVEL) && (__DARWIN_C_LEVEL >= __DARWIN_C_FULL)
+#define HAVE_FGETLN 1
+#else
+#define HAVE_FGETLN 0
+#endif
 #endif
 
 #if !defined(fgetln) && !HAVE_FGETLN
@@ -62,7 +64,7 @@ fgetln_(
 		length = 0;
 	}
 	if (len)
-		*len = length;
+		*len = (size_t)length;
 	return linep;
 }
 #define fgetln  fgetln_

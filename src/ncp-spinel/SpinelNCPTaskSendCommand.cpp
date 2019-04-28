@@ -270,7 +270,7 @@ bail:
 static boost::any
 spinel_packed_to_any(const uint8_t* data_in, spinel_size_t data_len, const char* pack_format)
 {
-	spinel_datatype_iter_t spinel_iter = {};
+	spinel_datatype_iter_t spinel_iter;
 	spinel_datatype_iter_start(&spinel_iter, data_in, data_len, pack_format);
 
 	return spinel_iter_to_any(&spinel_iter);

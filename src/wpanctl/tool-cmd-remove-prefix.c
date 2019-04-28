@@ -38,7 +38,7 @@ static const arg_list_item_t remove_prefix_option_list[] = {
 	{'h', "help", NULL, "Print Help"},
 	{'t', "timeout", "ms", "Set timeout period"},
 	{'l', "length", "in bits", "Set the prefix length (default is 64)"},
-	{0}
+	{0, NULL, NULL, NULL}
 };
 
 int tool_cmd_remove_prefix(int argc, char* argv[])
@@ -61,11 +61,12 @@ int tool_cmd_remove_prefix(int argc, char* argv[])
 	dbus_bool_t configure = FALSE;
 	dbus_bool_t default_route = FALSE;
 	dbus_bool_t on_mesh = FALSE;
-	uint8_t prefix_bytes[16] = {};
+	uint8_t prefix_bytes[16];
 	uint8_t *addr = prefix_bytes;
 	uint32_t preferred_lifetime = 0;
 	uint32_t valid_lifetime = 0;
 
+	memset(prefix_bytes, 0, sizeof(prefix_bytes));
 	dbus_error_init(&error);
 
 	while (1) {
@@ -92,7 +93,7 @@ int tool_cmd_remove_prefix(int argc, char* argv[])
 			goto bail;
 
 		case 't':
-			timeout = strtol(optarg, NULL, 0);
+			timeout = (int)strtol(optarg, NULL, 0);
 			break;
 
 		case 'l':

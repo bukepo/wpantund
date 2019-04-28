@@ -146,6 +146,8 @@ SpinelNCPControlInterface::reset(CallbackWithStatus cb)
 void
 SpinelNCPControlInterface::begin_net_wake(uint8_t data, uint32_t flags, CallbackWithStatus cb)
 {
+	(void)data;
+	(void)flags;
 	// TODO: Writeme!
 	cb(kWPANTUNDStatus_FeatureNotImplemented);
 }
@@ -235,6 +237,7 @@ SpinelNCPControlInterface::add_external_route(
 	bool stable,
 	CallbackWithStatus cb
 ) {
+	(void)domain_id;
 	require_action(route != NULL, bail, cb(kWPANTUNDStatus_InvalidArgument));
 	require_action(prefix_len >= 0, bail, cb(kWPANTUNDStatus_InvalidArgument));
 	require_action(prefix_len <= IPV6_MAX_PREFIX_LENGTH, bail, cb(kWPANTUNDStatus_InvalidArgument));
@@ -262,6 +265,7 @@ SpinelNCPControlInterface::remove_external_route(
 	int domain_id,
 	CallbackWithStatus cb
 ) {
+	(void)domain_id;
 	require_action(route != NULL, bail, cb(kWPANTUNDStatus_InvalidArgument));
 	require_action(prefix_len >= 0, bail, cb(kWPANTUNDStatus_InvalidArgument));
 	require_action(prefix_len <= IPV6_MAX_PREFIX_LENGTH, bail, cb(kWPANTUNDStatus_InvalidArgument));
@@ -618,6 +622,7 @@ bail:
 void
 SpinelNCPControlInterface::handle_permit_join_timeout(Timer *timer, int seconds)
 {
+	(void)timer;
 	syslog(LOG_NOTICE, "PermitJoin: Timeout interval of %d seconds expired", seconds);
 	permit_join(0);
 }
@@ -631,6 +636,7 @@ SpinelNCPControlInterface::permit_join(
 	CallbackWithStatus cb
 	)
 {
+	(void)network_wide;
 	SpinelNCPTaskSendCommand::Factory factory(mNCPInstance);
 	bool should_update_steering_data = false;
 	uint8_t steering_data_addr[sizeof(mNCPInstance->mSteeringDataAddress)];

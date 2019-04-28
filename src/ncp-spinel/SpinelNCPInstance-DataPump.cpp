@@ -254,7 +254,7 @@ SpinelNCPInstance::ncp_to_driver_pump()
 			uint16_t frame_crc = (mInboundFrame[mInboundFrameSize]|(mInboundFrame[mInboundFrameSize+1]<<8));
 			if (mInboundFrameHDLCCRC != frame_crc) {
 
-				int i;
+				spinel_size_t i;
 				static const uint8_t kAsciiCR = 13;
 				static const uint8_t kAsciiBEL = 7;
 

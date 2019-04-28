@@ -55,7 +55,7 @@ void
 SpinelNCPInstance::handle_ncp_debug_stream(const uint8_t* data_ptr, int data_len)
 {
 	static char linebuffer[NCP_DEBUG_LINE_LENGTH_MAX + 1];
-	static int linepos = 0;
+	static size_t linepos = 0;
 	while (data_len--) {
 		char nextchar = *data_ptr++;
 
@@ -311,7 +311,7 @@ nl::wpantund::peek_ncp_callback_status(int event, va_list args)
 {
 	int ret = 0;
 
-	if (EVENT_NCP_PROP_VALUE_IS == event) {
+	if (EVENT_NCP_PROP_VALUE_IS == static_cast<unsigned int>(event)) {
 		va_list tmp;
 		va_copy(tmp, args);
 		unsigned int key = va_arg(tmp, unsigned int);
@@ -324,7 +324,7 @@ nl::wpantund::peek_ncp_callback_status(int event, va_list args)
 			}
 		}
 		va_end(tmp);
-	} else if (EVENT_NCP_RESET == event) {
+	} else if (EVENT_NCP_RESET == static_cast<unsigned int>(event)) {
 		va_list tmp;
 		va_copy(tmp, args);
 		ret = va_arg(tmp, int);
@@ -735,7 +735,7 @@ unpack_mac_whitelist_entries(const uint8_t *data_in, spinel_size_t data_len, boo
 							 eui64->bytes[4], eui64->bytes[5], eui64->bytes[6], eui64->bytes[7]);
 
 			if (rssi != kWPANTUND_Whitelist_RssiOverrideDisabled) {
-				if (index >= 0 && index < sizeof(c_string)) {
+				if (index >= 0 && static_cast<size_t>(index) < sizeof(c_string)) {
 					snprintf(c_string + index, sizeof(c_string) - index, "   fixed-rssi:%d", rssi);
 				}
 			}
@@ -792,9 +792,8 @@ unpack_mac_blacklist_entries(const uint8_t *data_in, spinel_size_t data_len, boo
 
 		} else {
 			char c_string[500];
-			int index;
 
-			index = snprintf(c_string, sizeof(c_string), "%02X%02X%02X%02X%02X%02X%02X%02X",
+			snprintf(c_string, sizeof(c_string), "%02X%02X%02X%02X%02X%02X%02X%02X",
 							 eui64->bytes[0], eui64->bytes[1], eui64->bytes[2], eui64->bytes[3],
 							 eui64->bytes[4], eui64->bytes[5], eui64->bytes[6], eui64->bytes[7]);
 
@@ -878,7 +877,6 @@ unpack_ncp_counters_all_mac(const uint8_t *data_in, spinel_size_t data_len, boos
 	std::list<std::string> result_as_string;
 	ValueMap result_as_val_map;
 	int ret = kWPANTUNDStatus_Ok;
-	spinel_ssize_t len;
 
 	const char *tx_counter_names[] = {
 		kWPANTUNDValueMapKey_Counter_TxTotal,
@@ -5264,6 +5262,7 @@ SpinelNCPInstance::handle_ncp_spinel_callback(unsigned int command, const uint8_
 bool
 SpinelNCPInstance::should_filter_address(const struct in6_addr &addr, uint8_t prefix_len)
 {
+	(void)prefix_len;
 	static const uint8_t service_aloc_start = 0x10;
 	static const uint8_t service_aloc_end = 0x2F;
 	static const uint8_t rloc_bytes[] = {0x00,0x00,0x00,0xFF,0xFE,0x00};

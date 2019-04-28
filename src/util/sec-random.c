@@ -53,7 +53,7 @@ sec_random_fill(uint8_t* buffer, int length)
 	int ret = sec_random_init();
 
 	if (ret >= 0) {
-		ret = (int)fread(buffer, length, 1, gSecRandomFile);
+		ret = (int)fread(buffer, (size_t)length, 1, gSecRandomFile);
 	}
 
 	return ret;

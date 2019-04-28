@@ -65,9 +65,8 @@ time_ms(void)
 {
 #if HAVE_CLOCK_GETTIME
 	struct timespec tv = { 0 };
-	int ret;
 
-	ret = clock_gettime(CLOCK_MONOTONIC, &tv);
+	clock_gettime(CLOCK_MONOTONIC, &tv);
 
 	return (cms_t)(tv.tv_sec * MSEC_PER_SEC) + (cms_t)(tv.tv_nsec / NSEC_PER_MSEC);
 #else

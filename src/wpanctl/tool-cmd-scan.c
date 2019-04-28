@@ -40,7 +40,7 @@ static const arg_list_item_t scan_option_list[] = {
 	{'j', "joiner-only", NULL, "Scan for joiner only devices (used in discover scan)"},
 	{'f', "enable-filtering", NULL, "Enable scan result filtering (used in discover scan)"},
 	{'p', "panid-filtering", NULL, "PANID used for filtering, 0xFFFF to disable (used in discover scan)"},
-	{0}
+	{0, NULL, NULL, NULL}
 };
 
 int gScannedNetworkCount = 0;
@@ -70,6 +70,8 @@ dbus_beacon_handler(
     DBusMessage *   message,
     void *          user_data
 ) {
+	(void)connection;
+	(void)user_data;
 	DBusMessageIter iter;
 	int ret;
 	struct wpan_network_info_s network_info;
@@ -132,6 +134,9 @@ dbus_energy_scan_handler(
     DBusMessage *   message,
     void *          user_data
 ) {
+	(void)connection;
+	(void)user_data;
+
 	DBusMessageIter iter;
 	int ret;
 	int16_t channel;
@@ -183,7 +188,7 @@ int tool_cmd_scan(int argc, char *argv[])
 	DBusMessage *reply = NULL;
 	DBusPendingCall *pending = NULL;
 	DBusError error;
-	int32_t scan_period = 0;
+	long scan_period = 0;
 	uint32_t channel_mask = 0;
 	dbus_bool_t joiner_flag = FALSE;
 	dbus_bool_t enable_filtering = FALSE;
@@ -222,7 +227,7 @@ int tool_cmd_scan(int argc, char *argv[])
 			goto bail;
 
 		case 't':
-			timeout = strtol(optarg, NULL, 0);
+			timeout = (int)strtol(optarg, NULL, 0);
 			break;
 
 		case 'c':
@@ -246,7 +251,7 @@ int tool_cmd_scan(int argc, char *argv[])
 			break;
 
 		case 'p':
-			pan_id_filter = strtol(optarg, NULL, 0);
+			pan_id_filter = (uint16_t)strtol(optarg, NULL, 0);
 			break;
 		}
 	}

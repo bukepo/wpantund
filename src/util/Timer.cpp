@@ -41,6 +41,7 @@ Timer *Timer::mListHead = kListEndMarker;
 static void
 null_timer_callback(Timer *timer)
 {
+	(void)timer;
 	return;
 }
 

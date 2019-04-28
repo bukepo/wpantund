@@ -102,8 +102,9 @@ int any_to_int(const boost::any& value)
 struct in6_addr
 any_to_ipv6(const boost::any& value)
 {
-	struct in6_addr ret = {};
+	struct in6_addr ret;
 
+	memset(&ret, 0, sizeof(ret));
 	if (value.type() == typeid(std::string)) {
 		std::string str(boost::any_cast<std::string>(value));
 		size_t lastchar(str.find_first_not_of("0123456789abcdefABCDEF:."));

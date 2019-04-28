@@ -52,7 +52,7 @@ static const arg_list_item_t commissioner_option_list[] = {
 	{'a', "joiner-add", NULL, "Add joiner"},
 	{'r', "joiner-remove", NULL, "Remove joiner"},
 	{'s', "status", NULL, "Status information"},
-	{0}
+	{0, NULL, NULL, NULL}
 };
 
 int tool_cmd_commissioner(int argc, char* argv[])
@@ -67,9 +67,8 @@ int tool_cmd_commissioner(int argc, char* argv[])
 	DBusError error;
 	const char* ext_addr = NULL;
 	const char* psk = NULL;
-	int psk_len = 0;
+	size_t psk_len = 0;
 	uint32_t joiner_timeout = DEFAULT_JOINER_TIMEOUT;
-	dbus_bool_t enabled = false;
 	const char* invalid_psk_characters = COMMR_INVALID_PSK_CHARACTERS;
 	const char* property_commissioner_enabled = kWPANTUNDProperty_CommissionerState;
 	const char* property_commissioner_enabled_value = "false";
@@ -181,13 +180,14 @@ int tool_cmd_commissioner(int argc, char* argv[])
 
 		case 't':
 			//timeout
-			timeout = strtol(optarg, NULL, 0);
+			timeout = (int)strtol(optarg, NULL, 0);
 			break;
 
 		case 'e':
 			// start (enabled)
 			property_commissioner_enabled_value = "true";
-			// intentionally pass through
+			// fall through
+
 		case 'd':
 			// stop (disabled)
 			ret = lookup_dbus_name_from_interface(interface_dbus_name, gInterfaceName);
@@ -362,11 +362,10 @@ int tool_cmd_commissioner(int argc, char* argv[])
 				memset(psk_bytes, '\0', psk_len+1);
 
 				memcpy(psk_bytes, psk, psk_len);
-				char *psk = psk_bytes;
 
 				dbus_message_append_args(
 					message,
-					DBUS_TYPE_STRING, &psk,
+					DBUS_TYPE_STRING, &psk_bytes,
 					DBUS_TYPE_INVALID
 				);
 

@@ -47,7 +47,7 @@ static const arg_list_item_t form_option_list[] = {
 		"Form as a specific node type" },
 	{'M', "mesh-local-prefix", "Mesh-Local IPv6 Prefix", "Specify a non-default mesh-local IPv6 prefix"},
 	{'L', "legacy-prefix", "Legacy IPv6 Prefix", "Specify a specific *LEGACY* IPv6 prefix"},
-	{0}
+	{0, NULL, NULL, NULL}
 };
 
 int tool_cmd_form(int argc, char *argv[])
@@ -116,12 +116,12 @@ int tool_cmd_form(int argc, char *argv[])
 			goto bail;
 
 		case 't':
-			timeout = strtol(optarg, NULL, 0);
+			timeout = (int)strtol(optarg, NULL, 0);
 			break;
 
 		case 'c':
 			has_channel = true;
-			channel = strtol(optarg, NULL, 0);
+			channel = (uint16_t)strtol(optarg, NULL, 0);
 			break;
 
 		case 'm':
@@ -136,7 +136,7 @@ int tool_cmd_form(int argc, char *argv[])
 
 		case 'p':
 			has_panid = true;
-			panid = strtol(optarg, NULL, 0);
+			panid = (uint16_t)strtol(optarg, NULL, 0);
 			break;
 
 		case 'x':
@@ -155,7 +155,7 @@ int tool_cmd_form(int argc, char *argv[])
 
 		case 'i':
 			has_key_index = true;
-			key_index = strtol(optarg, NULL, 0);
+			key_index = (uint32_t)strtol(optarg, NULL, 0);
 			break;
 
 		case 'M':

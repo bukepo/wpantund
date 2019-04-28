@@ -34,7 +34,7 @@ namespace nl {
 #define EVENT_IDLE		1
 #define EVENT_STARTING_TASK		2
 
-#define EH_BEGIN_SUB(pt)	{ bool eh_did_timeout(false); PT*const __eh_pt = (pt); (void)eh_did_timeout; PT_BEGIN(__eh_pt)
+#define EH_BEGIN_SUB(pt)	{ bool eh_did_timeout(false); PT*const __eh_pt = (pt); (void)eh_did_timeout; PT_BEGIN(__eh_pt); (void)PT_YIELD_FLAG
 #define EH_BEGIN()			EH_BEGIN_SUB(&mControlPT)
 #define EH_END()			PT_END(__eh_pt) }
 

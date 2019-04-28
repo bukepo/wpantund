@@ -270,6 +270,7 @@ netif_mgmt_add_ipv6_address(int reqfd, const char* if_name, const uint8_t addr[1
 	require_string(ret == 0 || errno == EALREADY, bail, strerror(errno));
 
 #else
+	(void)prefixlen;
 
 	/* Linux */
 
@@ -285,7 +286,6 @@ netif_mgmt_add_ipv6_address(int reqfd, const char* if_name, const uint8_t addr[1
 	};
 
 	struct sockaddr_in6 sai;
-	int sockfd;
 	struct in6_ifreq ifr6;
 
 	memset(&sai, 0, sizeof(struct sockaddr));

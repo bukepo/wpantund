@@ -75,6 +75,9 @@ m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
 m4_ifdef([AX_CODE_COVERAGE], [AX_CODE_COVERAGE], [AC_SUBST([CODE_COVERAGE_RULES])])
 
+AC_PROG_CC([],AC_MSG_ERROR(["A working C compiler is required"]))
+AC_PROG_CXX([],AC_MSG_ERROR(["A working C++ compiler is required"]))
+
 LT_INIT
 
 AC_LIBTOOL_DLOPEN_SELF
@@ -83,6 +86,20 @@ AC_PROG_LIBTOOL
 
 AC_CONFIG_SRCDIR([src/version.h])
 AC_CONFIG_HEADERS([src/config.h])
+
+CPPFLAGS="${CPPFLAGS} -D_BSD_SOURCE=1 -D_DEFAULT_SOURCE=1 -D_GNU_SOURCE=1 -D_XOPEN_SOURCE=1 -D__USE_XOPEN=1"
+CFLAGS="${CFLAGS} -Wall -Wextra -Wshadow"
+CXXFLAGS="${CXXFLAGS} -Wall -Wextra -Wshadow -Werror -Wnon-virtual-dtor"
+
+AX_CHECK_COMPILE_FLAG([-Wno-implicit-fallthrough],[
+					   CFLAGS="${CFLAGS} -Wno-implicit-fallthrough"
+					   CXXFLAGS="${CXXFLAGS} -Wno-implicit-fallthrough"
+					   ])
+
+AX_CHECK_COMPILE_FLAG([-Wconversion],[
+					   CFLAGS="${CFLAGS} -Wconversion"
+					   CXXFLAGS="${CXXFLAGS} -Wconversion"
+					   ])
 
 # This varable is for defining the default NCP plugin.
 # This is the default value, which can be overridden below.
@@ -221,9 +238,6 @@ if test "${SOCKET_UTILS_DEFAULT_SHELL+set}" = "set"
 then AC_DEFINE_UNQUOTED([SOCKET_UTILS_DEFAULT_SHELL], ["$SOCKET_UTILS_DEFAULT_SHELL"], [Default path to a shell])
 fi
 
-AC_PROG_CC([],AC_MSG_ERROR(["A working C compiler is required"]))
-AC_PROG_CXX([],AC_MSG_ERROR(["A working C++ compiler is required"]))
-
 NL_FUZZ_TARGETS
 NL_APPEND_NETWORK_TIME_RECEIVED_MONOTONIC_TIMESTAMP
 
@@ -345,6 +359,9 @@ AC_OUTPUT
 echo ""
 echo "= Summary ====================================================================="
 echo ""
+echo "CPPFLAGS ....................... ${CPPFLAGS}"
+echo "CFLAGS ......................... ${CFLAGS}"
+echo "CXXFLAGS ....................... ${CXXFLAGS}"
 echo "ConnMan Plugin ................. ${with_connman-no}"
 echo "Using libreadline .............. ${with_readline-???}"
 echo "Boost .......................... ${with_boost-???}"

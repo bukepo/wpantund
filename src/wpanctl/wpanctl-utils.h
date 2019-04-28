@@ -67,7 +67,7 @@ struct wpan_network_info_s {
 	char network_name[17];
 	dbus_bool_t allowing_join;
 	uint16_t pan_id;
-	int16_t channel;
+	uint16_t channel;
 	uint64_t xpanid;
 	int8_t rssi;
 	uint8_t type;

@@ -33,7 +33,7 @@ const char list_cmd_syntax[] = "[args] <duration>]";
 static const arg_list_item_t list_option_list[] = {
 	{'h', "help", NULL, "Print Help"},
 	{'t', "timeout", "ms", "Set timeout period"},
-	{0}
+	{0, NULL, NULL, NULL}
 };
 
 int tool_cmd_list(int argc, char* argv[])
@@ -69,7 +69,7 @@ int tool_cmd_list(int argc, char* argv[])
 			goto bail;
 
 		case 't':
-			timeout = strtol(optarg, NULL, 0);
+			timeout = (int)strtol(optarg, NULL, 0);
 			break;
 		}
 	}

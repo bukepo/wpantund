@@ -108,7 +108,7 @@ private:
 		uint8_t         mData[PCAP_PACKET_MAX_SIZE];
 		PcapFrameHeader mHeader;
 	};
-	int               mLen;
+	size_t            mLen;
 	wpantund_status_t mStatus;
 };
 

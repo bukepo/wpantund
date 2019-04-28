@@ -24,9 +24,6 @@
 #include <config.h>
 #endif
 
-#define _XOPEN_SOURCE 1 // For the "fds_bits" member of "fd_set"
-#define __USE_XOPEN   1 // This too
-
 #include <stdio.h>
 #include <stdint.h>
 #include "nlpt.h"

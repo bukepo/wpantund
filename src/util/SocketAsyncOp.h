@@ -24,6 +24,10 @@
 #include "SocketWrapper.h"
 #include "nlpt.h"
 #include <errno.h>
+#include <stdio.h>
+
+_Pragma("GCC diagnostic push")
+_Pragma("GCC diagnostic ignored \"-Wunused-but-set-variable\"")
 
 namespace nl {
 
@@ -163,5 +167,6 @@ write_packet_pt(struct nlpt *pt, nl::SocketWrapper* socket, const void* data, si
 
 }; // namespace nl
 
+_Pragma("GCC diagnostic pop")
 
 #endif /* defined(__wpantund__SocketAsyncOp__) */

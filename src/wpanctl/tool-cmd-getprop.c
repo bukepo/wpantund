@@ -36,7 +36,7 @@ static const arg_list_item_t getprop_option_list[] = {
 	{'t', "timeout", "ms", "Set timeout period"},
 	{'a', "all", NULL, "Print all supported properties"},
 	{'v', "value-only", NULL, "Print only the value of the property"},
-	{0}
+	{0, NULL, NULL, NULL}
 };
 
 int tool_cmd_getprop(int argc, char *argv[])
@@ -80,7 +80,7 @@ int tool_cmd_getprop(int argc, char *argv[])
 			goto bail;
 
 		case 't':
-			timeout = strtol(optarg, NULL, 0);
+			timeout = (int)strtol(optarg, NULL, 0);
 			break;
 
 		case 'a':

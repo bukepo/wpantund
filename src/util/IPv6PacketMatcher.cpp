@@ -63,7 +63,7 @@ static inline uint16_t IPV6_GET_UINT16(const uint8_t *packet, ssize_t len, size_
 {
 	uint16_t ret;
 
-	ret = (len >= offset + sizeof(uint16_t))
+	ret = (static_cast<size_t>(len) >= offset + sizeof(uint16_t))
 		? (packet[offset]<<8) | (packet[offset + 1]<<0)
 		: 0;
 

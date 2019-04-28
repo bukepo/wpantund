@@ -112,7 +112,7 @@ nl::wpantund::SpinelPackData(const char* pack_format, ...)
 
 		if (packed_size < 0) {
 			ret.clear();
-		} else if (packed_size > ret.size()) {
+		} else if (static_cast<size_t>(packed_size) > ret.size()) {
 			ret.resize(packed_size);
 			continue;
 		} else {

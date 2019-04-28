@@ -111,7 +111,7 @@ public:
 	NetworkInstance(
 	    const std::string& _name = "",
 	    const uint8_t _xpanid[8] = NULL,
-	    uint16_t _panid = 0xFFFF, int _channel = 0,
+	    uint16_t _panid = 0xFFFF, uint8_t _channel = 0,
 	    bool _joinable = false
 	    ) :
 		NetworkId(_name, _xpanid),
@@ -127,7 +127,7 @@ public:
 	NetworkInstance(
 	    const std::string& _name,
 	    const uint64_t _xpanid,
-	    uint16_t _panid = 0xFFFF, int _channel = 0,
+	    uint16_t _panid = 0xFFFF, uint8_t _channel = 0,
 	    bool _joinable = false
 	    ) :
 		NetworkId(_name, _xpanid),

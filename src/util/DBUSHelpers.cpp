@@ -84,7 +84,7 @@ DBUSHelpers::any_from_dbus_iter(DBusMessageIter *iter)
 			const uint8_t* value = NULL;
 			int nelements = 0;
 			dbus_message_iter_get_fixed_array(&sub_iter, &value, &nelements);
-			ret = nl::Data(value, nelements);
+			ret = nl::Data(value, static_cast<size_t>(nelements));
 		} else if (dbus_message_iter_get_arg_type(&sub_iter) == DBUS_TYPE_DICT_ENTRY) {
 			ret = value_map_from_dbus_iter(iter);
 		} else {

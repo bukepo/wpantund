@@ -33,7 +33,7 @@ const char status_cmd_syntax[] = "[args]";
 static const arg_list_item_t status_option_list[] = {
 	{'h', "help", NULL, "Print Help"},
 	{'t', "timeout", "ms", "Set timeout period"},
-	{0}
+	{0, NULL, NULL, NULL}
 };
 
 int tool_cmd_status(int argc, char *argv[])
@@ -69,7 +69,7 @@ int tool_cmd_status(int argc, char *argv[])
 			goto bail;
 
 		case 't':
-			timeout = strtol(optarg, NULL, 0);
+			timeout = (int)strtol(optarg, NULL, 0);
 			break;
 		}
 	}
@@ -96,7 +96,6 @@ int tool_cmd_status(int argc, char *argv[])
 
 	{
 		DBusMessageIter iter;
-		DBusMessageIter list_iter;
 		char path[DBUS_MAXIMUM_NAME_LENGTH+1];
 		char interface_dbus_name[DBUS_MAXIMUM_NAME_LENGTH+1];
 		ret = lookup_dbus_name_from_interface(interface_dbus_name, gInterfaceName);

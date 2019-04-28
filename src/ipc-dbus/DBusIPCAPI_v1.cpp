@@ -123,6 +123,8 @@ DBusIPCAPI_v1::init_callback_tables()
 static void
 ObjectPathUnregisterFunction_cb(DBusConnection *connection, void *user_data)
 {
+	(void)connection;
+
 	delete (std::pair<NCPControlInterface*, DBusIPCAPI_v1*> *)user_data;
 }
 
@@ -138,6 +140,7 @@ DBusIPCAPI_v1::add_interface(NCPControlInterface* interface)
 	static const DBusObjectPathVTable ipc_interface_vtable = {
 		&ObjectPathUnregisterFunction_cb,
 		&DBusIPCAPI_v1::dbus_message_handler,
+		NULL, NULL, NULL, NULL
 	};
 
 	std::string name = interface->get_name();
@@ -452,6 +455,8 @@ DBusIPCAPI_v1::status_response_helper(
     int ret, NCPControlInterface* interface, DBusMessage *message
     )
 {
+	(void)ret;
+
 	DBusMessage *reply = dbus_message_new_method_return(message);
 
 	if (reply) {
@@ -1244,7 +1249,7 @@ DBusIPCAPI_v1::interface_config_gateway_handler(
 	uint32_t valid_lifetime = 0;
 	uint8_t *prefix(NULL);
 	int prefix_len_in_bytes(0);
-	struct in6_addr address = {};
+	struct in6_addr address;
 	bool did_succeed(false);
 	int16_t priority_raw(0);
 	NCPControlInterface::OnMeshPrefixPriority priority(NCPControlInterface::PREFIX_MEDIUM_PREFERENCE);
@@ -1252,6 +1257,7 @@ DBusIPCAPI_v1::interface_config_gateway_handler(
 	uint16_t prefix_len_in_bits = 0;
 	const uint16_t max_prefix_len_in_bits = 64;
 
+	memset(&address, 0, sizeof(address));
 	did_succeed = dbus_message_get_args(
 		message, NULL,
 		DBUS_TYPE_BOOLEAN, &default_route,
@@ -1308,14 +1314,14 @@ DBusIPCAPI_v1::interface_config_gateway_handler(
 	}
 
 	require(did_succeed, bail);
-	require(prefix_len_in_bytes <= sizeof(address), bail);
+	require(static_cast<size_t>(prefix_len_in_bytes) <= sizeof(address), bail);
 	require(prefix_len_in_bytes >= 0, bail);
 
 	require(prefix_len_in_bits <= max_prefix_len_in_bits, bail);
 	require(prefix_len_in_bits > 0, bail);
 	require(prefix_len_in_bits <= IPV6_PREFIX_BYTES_TO_BITS(prefix_len_in_bytes), bail);
 
-	memcpy(address.s6_addr, prefix, prefix_len_in_bytes);
+	memcpy(address.s6_addr, prefix, static_cast<size_t>(prefix_len_in_bytes));
 
 	if (priority_raw > 0) {
 		priority = NCPControlInterface::PREFIX_HIGH_PREFERENCE;
@@ -1402,9 +1408,9 @@ DBusIPCAPI_v1::service_add_handler(
 
 	interface->add_service(
 		enterprise_number,
-		Data(service_data, service_data_len),
-		stable, 
-		Data(server_data, server_data_len),
+		Data(service_data, static_cast<size_t>(service_data_len)),
+		stable,
+		Data(server_data, static_cast<size_t>(server_data_len)),
 		boost::bind(&DBusIPCAPI_v1::CallbackWithStatus_Helper, this, _1, message));
 
 	ret = DBUS_HANDLER_RESULT_HANDLED;
@@ -1423,7 +1429,7 @@ DBusIPCAPI_v1::service_remove_handler(
 	uint32_t enterprise_number;
 	uint8_t *service_data;
 	int service_data_len;
-	
+
 	did_succeed = dbus_message_get_args(
 		message, NULL,
 		DBUS_TYPE_UINT32, &enterprise_number,
@@ -1436,8 +1442,8 @@ DBusIPCAPI_v1::service_remove_handler(
 	dbus_message_ref(message);
 
 	interface->remove_service(
-		enterprise_number, 
-		Data(service_data, service_data_len),
+		enterprise_number,
+		Data(service_data, static_cast<size_t>(service_data_len)),
 		boost::bind(&DBusIPCAPI_v1::CallbackWithStatus_Helper, this, _1, message));
 
 	ret = DBUS_HANDLER_RESULT_HANDLED;
@@ -1459,9 +1465,10 @@ DBusIPCAPI_v1::interface_route_add_handler(
 	NCPControlInterface::ExternalRoutePriority priority(NCPControlInterface::ROUTE_MEDIUM_PREFERENCE);
 	dbus_bool_t stable(TRUE);
 	uint8_t prefix_len_in_bits(0);
-	struct in6_addr address = {};
+	struct in6_addr address;
 	bool did_succeed(false);
 
+	memset(&address, 0, sizeof(address));
 	did_succeed = dbus_message_get_args(
 		message, NULL,
 		DBUS_TYPE_ARRAY, DBUS_TYPE_BYTE, &route_prefix, &prefix_len_in_bytes,
@@ -1497,10 +1504,10 @@ DBusIPCAPI_v1::interface_route_add_handler(
 	}
 
 	require(did_succeed, bail);
-	require(prefix_len_in_bytes <= sizeof(address), bail);
+	require(static_cast<size_t>(prefix_len_in_bytes) <= sizeof(address), bail);
 	require(prefix_len_in_bytes >= 0, bail);
 
-	memcpy(address.s6_addr, route_prefix, prefix_len_in_bytes);
+	memcpy(address.s6_addr, route_prefix, static_cast<size_t>(prefix_len_in_bytes));
 
 	if  (priority_raw > 0) {
 		priority = NCPControlInterface::ROUTE_HIGH_PREFERENCE;
@@ -1536,9 +1543,10 @@ DBusIPCAPI_v1::interface_route_remove_handler(
 	int prefix_len_in_bytes(0);
 	uint8_t prefix_len_in_bits(0);
 	uint16_t domain_id = 0;
-	struct in6_addr address = {};
+	struct in6_addr address;
 	bool did_succeed(false);
 
+	memset(&address, 0, sizeof(address));
 	did_succeed = dbus_message_get_args(
 		message, NULL,
 		DBUS_TYPE_ARRAY, DBUS_TYPE_BYTE, &route_prefix, &prefix_len_in_bytes,
@@ -1559,10 +1567,10 @@ DBusIPCAPI_v1::interface_route_remove_handler(
 	}
 
 	require(did_succeed, bail);
-	require(prefix_len_in_bytes <= sizeof(address), bail);
+	require(static_cast<size_t>(prefix_len_in_bytes) <= sizeof(address), bail);
 	require(prefix_len_in_bytes >= 0, bail);
 
-	memcpy(address.s6_addr, route_prefix, prefix_len_in_bytes);
+	memcpy(address.s6_addr, route_prefix, static_cast<size_t>(prefix_len_in_bytes));
 
 	dbus_message_ref(message);
 
@@ -1651,8 +1659,6 @@ DBusIPCAPI_v1::interface_joiner_commissioning_handler(
 	dbus_bool_t action = FALSE;
 	const char* psk = NULL;
 	const char* provisioning_url = NULL;
-	int psk_len = 0;
-	int provisioning_url_len = 0;
 	bool did_succeed = false;
 	ValueMap options;
 
@@ -1984,7 +1990,7 @@ DBusIPCAPI_v1::interface_poke_handler(
 
 	interface->poke(
 		address,
-		Data(bytes, count),
+		Data(bytes, static_cast<size_t>(count)),
 		boost::bind(
 			&DBusIPCAPI_v1::CallbackWithStatus_Helper,
 			this,
@@ -2006,6 +2012,8 @@ DBusIPCAPI_v1::message_handler(
     DBusMessage *           message
     )
 {
+	(void)connection;
+
 	DBusHandlerResult ret = DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
 
 	if ((dbus_message_get_type(message) == DBUS_MESSAGE_TYPE_METHOD_CALL)

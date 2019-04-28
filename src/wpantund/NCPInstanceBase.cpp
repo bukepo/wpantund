@@ -1016,9 +1016,10 @@ NCPInstanceBase::set_prop_IPv6MeshLocalPrefix(const boost::any &value, CallbackW
 		nl::Data prefix;
 
 		if (value.type() == typeid(std::string)) {
-			uint8_t ula_bytes[16] = {};
+			uint8_t ula_bytes[16];
 			const std::string ip_string(any_to_string(value));
 
+			memset(ula_bytes, 0, sizeof(ula_bytes));
 			// Address-style
 			int bits = inet_pton(AF_INET6,ip_string.c_str(),ula_bytes);
 			if (bits <= 0) {
@@ -1414,6 +1415,7 @@ NCPInstanceBase::reinitialize_ncp(void)
 void
 NCPInstanceBase::reset_tasks(wpantund_status_t status)
 {
+	(void)status;
 }
 
 // ----------------------------------------------------------------------------

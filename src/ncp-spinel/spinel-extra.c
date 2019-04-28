@@ -85,39 +85,39 @@ spinel_datatype_iter_next(spinel_datatype_iter_t* iter)
 	switch ((spinel_datatype_t)*scratchpad.pack_format) {
 	case SPINEL_DATATYPE_INT8_C:
 	case SPINEL_DATATYPE_UINT8_C:
-		require(scratchpad.data_len >= sizeof(uint8_t), bail);
+		require((size_t)scratchpad.data_len >= sizeof(uint8_t), bail);
 		scratchpad.data_ptr += sizeof(uint8_t);
 		scratchpad.data_len -= sizeof(uint8_t);
 		break;
 
 	case SPINEL_DATATYPE_INT16_C:
 	case SPINEL_DATATYPE_UINT16_C:
-		require(scratchpad.data_len >= sizeof(uint16_t), bail);
+		require((size_t)scratchpad.data_len >= sizeof(uint16_t), bail);
 		scratchpad.data_ptr += sizeof(uint16_t);
 		scratchpad.data_len -= sizeof(uint16_t);
 		break;
 
 	case SPINEL_DATATYPE_INT32_C:
 	case SPINEL_DATATYPE_UINT32_C:
-		require(scratchpad.data_len >= sizeof(uint32_t), bail);
+		require((size_t)scratchpad.data_len >= sizeof(uint32_t), bail);
 		scratchpad.data_ptr += sizeof(uint32_t);
 		scratchpad.data_len -= sizeof(uint32_t);
 		break;
 
 	case SPINEL_DATATYPE_IPv6ADDR_C:
-		require(scratchpad.data_len >= sizeof(spinel_ipv6addr_t), bail);
+		require((size_t)scratchpad.data_len >= sizeof(spinel_ipv6addr_t), bail);
 		scratchpad.data_ptr += sizeof(spinel_ipv6addr_t);
 		scratchpad.data_len -= sizeof(spinel_ipv6addr_t);
 		break;
 
 	case SPINEL_DATATYPE_EUI64_C:
-		require(scratchpad.data_len >= sizeof(spinel_eui64_t), bail);
+		require((size_t)scratchpad.data_len >= sizeof(spinel_eui64_t), bail);
 		scratchpad.data_ptr += sizeof(spinel_eui64_t);
 		scratchpad.data_len -= sizeof(spinel_eui64_t);
 		break;
 
 	case SPINEL_DATATYPE_EUI48_C:
-		require(scratchpad.data_len >= sizeof(spinel_eui48_t), bail);
+		require((size_t)scratchpad.data_len >= sizeof(spinel_eui48_t), bail);
 		scratchpad.data_ptr += sizeof(spinel_eui48_t);
 		scratchpad.data_len -= sizeof(spinel_eui48_t);
 		break;

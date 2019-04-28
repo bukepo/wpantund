@@ -153,7 +153,7 @@ static arg_list_item_t option_list[] = {
 #if HAVE_PWD_H
 	{ 'u', "user", NULL, "Username for dropping privileges" },
 #endif
-	{ 0 }
+	{ 0, NULL, NULL, NULL }
 };
 
 static int gRet;
@@ -175,6 +175,7 @@ static sig_t gPreviousHandlerForSIGTERM;
 static void
 signal_SIGINT(int sig)
 {
+	(void)sig;
 	static const char message[] = "\nCaught SIGINT!\n";
 
 	gRet = ERRORCODE_INTERRUPT;
@@ -192,6 +193,7 @@ signal_SIGINT(int sig)
 static void
 signal_SIGTERM(int sig)
 {
+	(void)sig;
 	static const char message[] = "\nCaught SIGTERM!\n";
 
 	gRet = ERRORCODE_QUIT;
@@ -209,6 +211,7 @@ signal_SIGTERM(int sig)
 static void
 signal_SIGHUP(int sig)
 {
+	(void)sig;
 	static const char message[] = "\nCaught SIGHUP!\n";
 
 	gRet = ERRORCODE_SIGHUP;
@@ -225,6 +228,7 @@ signal_SIGHUP(int sig)
 static void
 signal_critical(int sig, siginfo_t * info, void * ucontext)
 {
+	(void)info;
 	// This is the last hurah for this process.
 	// We dump the stack, because that's all we can do.
 
@@ -316,6 +320,7 @@ set_config_param(
     void* ignored, const char* key, const char* value
     )
 {
+	(void)ignored;
 	int ret = -1;
 
 	syslog(LOG_INFO, "set-config-param: \"%s\" = \"%s\"", key, value);
@@ -442,6 +447,7 @@ static fd_set gErrorableFDs;
 bool
 nlpt_hook_check_read_fd_source(struct nlpt* nlpt, int fd)
 {
+	(void)nlpt;
 
 	bool ret = false;
 	if (fd >= 0 && fd < FD_SETSIZE) {
@@ -455,6 +461,8 @@ nlpt_hook_check_read_fd_source(struct nlpt* nlpt, int fd)
 bool
 nlpt_hook_check_write_fd_source(struct nlpt* nlpt, int fd)
 {
+	(void)nlpt;
+
 	bool ret = false;
 	if (fd >= 0 && fd < FD_SETSIZE) {
 		ret = FD_ISSET(fd, &gWritableFDs) || FD_ISSET(fd, &gErrorableFDs);
@@ -464,9 +472,12 @@ nlpt_hook_check_write_fd_source(struct nlpt* nlpt, int fd)
 	return ret;
 }
 
+#if VERBOSE_DEBUG
 static void
 syslog_dump_select_info(int loglevel, fd_set *read_fd_set, fd_set *write_fd_set, fd_set *error_fd_set, int fd_count, cms_t timeout)
 {
+	(void)error_fd_set;
+
 #define DUMP_FD_SET(l, x) do {\
 		int i; \
 		std::string buffer; \
@@ -500,6 +511,7 @@ syslog_dump_select_info(int loglevel, fd_set *read_fd_set, fd_set *write_fd_set,
 		//DUMP_FD_SET(loglevel, error_fd_set); // Commented out to reduce log volume
 	}
 }
+#endif // VERBOSE_DEBUG
 
 /* ------------------------------------------------------------------------- */
 /* MARK: Main Loop Class */
@@ -697,8 +709,6 @@ int
 main(int argc, char * argv[])
 {
 	int c;
-	bool interface_added = false;
-	int zero_cms_in_a_row_count = 0;
 	const char* config_file = SYSCONFDIR "/wpantund.conf";
 	const char* alt_config_file = SYSCONFDIR "/wpan-tunnel-driver.conf";
 	std::list<shared_ptr<nl::wpantund::IPCServer> > ipc_server_list;

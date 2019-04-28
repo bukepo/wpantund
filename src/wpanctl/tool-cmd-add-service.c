@@ -38,7 +38,7 @@ static const arg_list_item_t add_service_option_list[] = {
 	{'d', "data", NULL, "Data is binary data (in hex)"},
 	{'s', "string", NULL, "Data is a string"},
 	{'n', "not-stable", NULL, "Indicate the service is NOT part of stable Network Data"},
-	{0}
+	{0, NULL, NULL, NULL}
 };
 
 int tool_cmd_add_service(int argc, char* argv[])
@@ -102,7 +102,7 @@ int tool_cmd_add_service(int argc, char* argv[])
 			break;
 
 		case 't':
-			timeout = strtol(optarg, NULL, 0);
+			timeout = (int)strtol(optarg, NULL, 0);
 			break;
 		}
 	}
@@ -175,15 +175,15 @@ int tool_cmd_add_service(int argc, char* argv[])
 		    WPANTUND_IF_CMD_SERVICE_ADD
 		    );
 
-		service_data_len = strlen(service_data);
-		server_data_len = strlen(server_data);
+		service_data_len = (int)strlen(service_data);
+		server_data_len = (int)strlen(server_data);
 
 		if (data_type == kDataType_Data) {
 			service_data_len = parse_string_into_data(
-				(uint8_t*)service_data, service_data_len, service_data);
+				(uint8_t*)service_data, (size_t)service_data_len, service_data);
 
 			server_data_len = parse_string_into_data(
-				(uint8_t*)server_data, server_data_len, server_data);
+				(uint8_t*)server_data, (size_t)server_data_len, server_data);
 		}
 
 		dbus_message_append_args(

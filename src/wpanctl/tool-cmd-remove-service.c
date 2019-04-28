@@ -37,7 +37,7 @@ static const arg_list_item_t remove_service_option_list[] = {
 	{'t', "timeout", "ms", "Set timeout period"},
 	{'d', "data", NULL, "Data is binary data (in hex)"},
 	{'s', "string", NULL, "Data is a string"},
-	{0}
+	{0, NULL, NULL, NULL}
 };
 
 int tool_cmd_remove_service(int argc, char* argv[])
@@ -93,7 +93,7 @@ int tool_cmd_remove_service(int argc, char* argv[])
 			break;
 
 		case 't':
-			timeout = strtol(optarg, NULL, 0);
+			timeout = (int)strtol(optarg, NULL, 0);
 			break;
 		}
 	}
@@ -157,11 +157,11 @@ int tool_cmd_remove_service(int argc, char* argv[])
 		    WPANTUND_IF_CMD_SERVICE_REMOVE
 		    );
 
-		service_data_len = strlen(service_data);
+		service_data_len = (int)strlen(service_data);
 
 		if (data_type == kDataType_Data) {
 			service_data_len = parse_string_into_data(
-				(uint8_t*)service_data, service_data_len, service_data);
+				(uint8_t*)service_data, (size_t)service_data_len, service_data);
 		}
 
 		dbus_message_append_args(

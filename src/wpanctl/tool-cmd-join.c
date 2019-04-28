@@ -47,7 +47,7 @@ static const arg_list_item_t join_option_list[] = {
 	{'k', "key", NULL, "Specify the network key"},
 	{'n', "name", NULL, "Forces the input argument to be treated as <network name> instead of scan index"
 		" (useful if network name is a number)"},
-	{0}
+	{0, NULL, NULL, NULL}
 };
 
 int tool_cmd_join(int argc, char* argv[])
@@ -105,12 +105,12 @@ int tool_cmd_join(int argc, char* argv[])
 			goto bail;
 
 		case 't':
-			timeout = strtol(optarg, NULL, 0);
+			timeout = (int)strtol(optarg, NULL, 0);
 			break;
 
 		case 'p':
 			has_panid = true;
-			panid = strtol(optarg, NULL, 0);
+			panid = (uint16_t)strtol(optarg, NULL, 0);
 			break;
 
 		case 'x':
@@ -120,7 +120,7 @@ int tool_cmd_join(int argc, char* argv[])
 
 		case 'c':
 			has_channel = true;
-			channel = strtol(optarg, NULL, 0);
+			channel = (uint16_t)strtol(optarg, NULL, 0);
 			break;
 
 		case 'k':
@@ -163,7 +163,7 @@ int tool_cmd_join(int argc, char* argv[])
 					"\nuse `-n` to force the argument to be parsed as <network-name>"
 					"\ninstead of <index of a previously scanned network>\n\n",
 					argv[0], scanned_network_index, gScannedNetworkCount);
-				ret - ERRORCODE_BADARG;
+				ret = ERRORCODE_BADARG;
 				goto bail;
 			}
 

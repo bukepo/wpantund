@@ -684,8 +684,8 @@ StatCollector::NodeStat::add_node_stat_history(StringList& output, std::string n
 				output.push_back(string_printf("Error : Improper address format (\'%s\')", node_indicator.c_str()));
 			}
 		} else { // Index mode:
-			int index;
-			index = static_cast<int>(strtol(node_indicator.c_str(), NULL, 0));
+			size_t index;
+			index = static_cast<size_t>(strtol(node_indicator.c_str(), NULL, 0));
 			if (index < mNodeInfoMap.size()) {
 				it = mNodeInfoMap.begin();
 				std::advance(it, index);
@@ -1679,6 +1679,7 @@ StatCollector::did_get_rip_entry_value_map(int status, const boost::any& value)
 int
 StatCollector::record_rip_entry(const ValueMap& rip_entry)
 {
+	(void)rip_entry;
 	ValueMap::const_iterator it;
 	Data eui64;
 	int8_t rssi = 0;

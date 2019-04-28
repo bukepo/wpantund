@@ -392,6 +392,8 @@ FirmwareUpgrade::get_upgrade_status(void)
 int
 FirmwareUpgrade::update_fd_set(fd_set *read_fd_set, fd_set *write_fd_set, fd_set *error_fd_set, int *max_fd, cms_t *timeout)
 {
+	(void)write_fd_set;
+	(void)timeout;
 	if ((mUpgradeStatus == EINPROGRESS) && (mFirmwareUpgradeFD >= 0)) {
 		if (read_fd_set != NULL) {
 			FD_SET(mFirmwareUpgradeFD, read_fd_set);

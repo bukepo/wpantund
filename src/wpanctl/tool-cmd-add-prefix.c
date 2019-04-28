@@ -46,7 +46,7 @@ static const arg_list_item_t add_prefix_option_list[] = {
 	{'c', "configure", NULL, "Set the prefix flag \"configure\""},
 	{'r', "default-route", NULL, "Set the prefix flag \"default-route\""},
 	{'o', "on-mesh", NULL, "Set the prefix flag \"on-mesh\""},
-	{0}
+	{0, NULL, NULL, NULL}
 };
 
 int tool_cmd_add_prefix(int argc, char* argv[])
@@ -69,11 +69,12 @@ int tool_cmd_add_prefix(int argc, char* argv[])
 	dbus_bool_t configure = FALSE;
 	dbus_bool_t default_route = FALSE;
 	dbus_bool_t on_mesh = FALSE;
-	uint8_t prefix_bytes[16] = {};
+	uint8_t prefix_bytes[16];
 	uint8_t *addr = prefix_bytes;
 	uint32_t preferred_lifetime = 0xFFFFFFFF;
 	uint32_t valid_lifetime = 0xFFFFFFFF;
 
+	memset(&prefix_bytes, 0, sizeof(prefix_bytes));
 	dbus_error_init(&error);
 
 	while (1) {
@@ -108,7 +109,7 @@ int tool_cmd_add_prefix(int argc, char* argv[])
 			goto bail;
 
 		case 't':
-			timeout = strtol(optarg, NULL, 0);
+			timeout = (int)strtol(optarg, NULL, 0);
 			break;
 
 		case 'P':

@@ -39,7 +39,7 @@
 
 WPANTUND_DECLARE_NCPINSTANCE_PLUGIN(spinel, SpinelNCPInstance);
 
-#define EVENT_NCP_MARKER         0xAB000000
+#define EVENT_NCP_MARKER         0xAB000000L
 #define EVENT_NCP(x)             ((x)|EVENT_NCP_MARKER)
 #define IS_EVENT_FROM_NCP(x)     (((x)&~0xFFFFFF) == EVENT_NCP_MARKER)
 
@@ -457,7 +457,7 @@ private:
 	PT mSleepPT;
 	PT mSubPT;
 
-	int mSubPTIndex;
+	uint32_t mSubPTIndex;
 
 	Data mNetworkPSKc;
 	Data mNetworkKey;

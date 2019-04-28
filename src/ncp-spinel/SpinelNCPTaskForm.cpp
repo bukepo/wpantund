@@ -68,7 +68,7 @@ nl::wpantund::SpinelNCPTaskForm::SpinelNCPTaskForm(
 	if (!mOptions.count(kWPANTUNDProperty_IPv6MeshLocalAddress)) {
 		union {
 			uint64_t xpanid;
-			uint8_t bytes[1];
+			uint8_t bytes[8];
 		} x = { any_to_uint64((mOptions[kWPANTUNDProperty_NetworkXPANID])) };
 
 #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
@@ -113,7 +113,6 @@ nl::wpantund::SpinelNCPTaskForm::vprocess_event(int event, va_list args)
 	int ret = kWPANTUNDStatus_Failure;
 
 	EH_BEGIN();
-
 
 	if (!mInstance->mEnabled) {
 		ret = kWPANTUNDStatus_InvalidWhenDisabled;

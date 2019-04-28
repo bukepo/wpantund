@@ -38,7 +38,7 @@ static const arg_list_item_t remove_route_option_list[] = {
 	{'h', "help", NULL, "Print Help"},
 	{'l', "length", "in bits", "Specify the route prefix length (default is 64)"},
 	{'d', "domain", NULL, "Domain id for the route (default is zero)"},
-	{0}
+	{0, NULL, NULL, NULL}
 };
 
 int tool_cmd_remove_route(int argc, char* argv[])
@@ -120,8 +120,6 @@ int tool_cmd_remove_route(int argc, char* argv[])
 	require_string(connection != NULL, bail, error.message);
 
 	{
-		DBusMessageIter iter;
-		DBusMessageIter list_iter;
 		char path[DBUS_MAXIMUM_NAME_LENGTH+1];
 		char interface_dbus_name[DBUS_MAXIMUM_NAME_LENGTH+1];
 		ret = lookup_dbus_name_from_interface(interface_dbus_name, gInterfaceName);
@@ -182,7 +180,7 @@ int tool_cmd_remove_route(int argc, char* argv[])
 			);
 
 			uint8_t *addr = prefix_bytes;
-			uint8_t len = (prefix_len_in_bits + 7) / 8;
+			int len = (prefix_len_in_bits + 7) / 8;
 
 			dbus_message_append_args(
 			    message,

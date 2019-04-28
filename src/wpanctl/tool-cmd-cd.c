@@ -43,6 +43,5 @@ int tool_cmd_cd(int argc, char* argv[])
 		strncpy(gInterfaceName, argv[1], sizeof(gInterfaceName) - 1);
 	}
 
-bail:
 	return ret;
 }

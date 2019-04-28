@@ -634,7 +634,7 @@ SpinelNCPTaskGetNetworkTopology::TableEntry::get_as_string(void)
 			mIPv6Addresses.size() > 0 ? ", IPv6Addrs:[" : ""
 		);
 
-		require(len >= 0 && len < remaning_len, bail);
+		require(len >= 0 && static_cast<size_t>(len) < remaning_len, bail);
 		str += len;
 		remaning_len -= len;
 
@@ -647,7 +647,7 @@ SpinelNCPTaskGetNetworkTopology::TableEntry::get_as_string(void)
 				in6_addr_to_string(*it).c_str()
 			);
 
-			require(len >= 0 && len < remaning_len, bail);
+			require(len >= 0 && static_cast<size_t>(len) < remaning_len, bail);
 			str += len;
 			remaning_len -= len;
 
@@ -656,7 +656,7 @@ SpinelNCPTaskGetNetworkTopology::TableEntry::get_as_string(void)
 
 		if (mIPv6Addresses.size() > 0) {
 			len = snprintf(str, remaning_len, "]");
-			require(len >= 0 && len < remaning_len, bail);
+			require(len >= 0 && static_cast<size_t>(len) < remaning_len, bail);
 			str += len;
 			remaning_len -= len;
 		}

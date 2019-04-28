@@ -108,6 +108,7 @@ DBUSIPCServer::DBUSIPCServer():
 	static const DBusObjectPathVTable ipc_interface_vtable = {
 		NULL,
 		&DBUSIPCServer::dbus_message_handler,
+		NULL, NULL, NULL, NULL
 	};
 
 	require(

@@ -226,7 +226,6 @@ TunnelIPv6Interface::process(void)
 
 	if (buffer_len > 0) {
 		struct nlmsghdr *nlp;
-		struct rtmsg *rtp;
 		int rta_len;
 		struct rtattr *rta;
 
@@ -446,6 +445,7 @@ bail:
 bool
 TunnelIPv6Interface::remove_address(const struct in6_addr *addr, int prefixlen)
 {
+	(void)prefixlen;
 	bool ret = false;
 
 	require_action(!IN6_IS_ADDR_UNSPECIFIED(addr), bail, mLastError = EINVAL);

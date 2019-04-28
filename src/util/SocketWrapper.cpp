@@ -58,6 +58,7 @@ SocketWrapper::can_write(void)const
 int
 SocketWrapper::set_log_level(int log_level)
 {
+	(void)log_level;
 	errno = ENOTSUP;
 	return -ENOTSUP;
 }
@@ -88,6 +89,8 @@ SocketWrapper::send_break(void)
 off_t
 SocketWrapper::lseek(off_t offset, int whence)
 {
+	(void)offset;
+	(void)whence;
 	errno = ENOTSUP;
 	return -ENOTSUP;
 }
@@ -113,6 +116,10 @@ SocketWrapper::did_reset(void)
 int
 SocketWrapper::update_fd_set(fd_set *read_fd_set, fd_set *write_fd_set, fd_set *error_fd_set, int *max_fd, cms_t *timeout)
 {
+	(void)read_fd_set;
+	(void)write_fd_set;
+	(void)error_fd_set;
+	(void)max_fd;
 	if (timeout != NULL) {
 		*timeout = std::min(*timeout, get_ms_to_next_event());
 	}

@@ -78,7 +78,7 @@ static arg_list_item_t option_list[] = {
 	{ 'I', "interface", "iface",
 	  "Set interface to use"                                                 },
 	{ 0, "ignore-mismatch", NULL, "Ignore driver version mismatch" },
-	{ 0 }
+	{ 0, NULL, NULL, NULL}
 };
 
 void print_commands();
@@ -109,6 +109,9 @@ tool_cmd_help(
 
 static int tool_cmd_clear(int argc, char *argv[])
 {
+	(void)argc;
+	(void)argv;
+
 	if (system("clear") == -1) {
 		printf("\n\n\n\n\n\n\n\n");
 	}
@@ -117,11 +120,11 @@ static int tool_cmd_clear(int argc, char *argv[])
 
 struct command_info_s commandList[] = {
 	WPANCTL_CLI_COMMANDS,
-	{"quit", "Terminate command line mode.", NULL},
-	{"help", "Display this help.", &tool_cmd_help},
-	{"clear", "Clear shell.", &tool_cmd_clear},
+	{"quit", "Terminate command line mode.", NULL, 0},
+	{"help", "Display this help.", &tool_cmd_help, 0},
+	{"clear", "Clear shell.", &tool_cmd_clear, 0},
 	{"?", NULL, &tool_cmd_help, 1},
-	{NULL}
+	{NULL, NULL, NULL, 0}
 };
 
 void
@@ -273,7 +276,7 @@ bail:
 static char*
 get_current_prompt()
 {
-	static char prompt[64] = {};
+	static char prompt[64];
 
 	if (!gInterfaceName[0]) {
 		snprintf(prompt,
@@ -312,8 +315,6 @@ process_input_readline(char *l)
 	}
 }
 #endif // HAVE_LIBREADLINE
-
-#pragma mark -
 
 #if HAVE_LIBREADLINE
 
@@ -427,9 +428,6 @@ bail:
 	return ret;
 }
 
-#pragma mark -
-
-
 int main(int argc, char * argv[])
 {
 	int c;
@@ -439,7 +437,7 @@ int main(int argc, char * argv[])
 
 	dbus_error_init(&error);
 
-	srandom(time(NULL));
+	srandom((unsigned int)time(NULL));
 
 	while (1) {
 		static struct option long_options[] = {

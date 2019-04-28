@@ -40,7 +40,7 @@ static const arg_list_item_t add_route_option_list[] = {
 	{'l', "length", "in bits", "Specify the route prefix length (default is 64)"},
 	{'d', "domain", NULL, "Domain id for the route (default is zero)"},
 	{'n', "not-stable", NULL, "Indicate the route is NOT part of stable Network Data"},
-	{0}
+	{0, NULL, NULL, NULL}
 };
 
 int tool_cmd_add_route(int argc, char* argv[])
@@ -197,7 +197,7 @@ int tool_cmd_add_route(int argc, char* argv[])
 			);
 
 			uint8_t *addr = prefix_bytes;
-			uint8_t len = (prefix_len_in_bits + 7) / 8;
+			int len = (prefix_len_in_bits + 7) / 8;
 
 			dbus_message_append_args(
 			    message,

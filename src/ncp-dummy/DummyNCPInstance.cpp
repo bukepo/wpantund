@@ -48,6 +48,9 @@ DummyNCPInstance::~DummyNCPInstance()
 int
 DummyNCPInstance::vprocess_event(int event, va_list args)
 {
+	(void)event;
+	(void)args;
+
 	EH_BEGIN();
 
 	EH_SLEEP_FOR(1);
@@ -94,37 +97,55 @@ DummyNCPInstance::get_control_interface()
 void
 DummyNCPInstance::add_unicast_address_on_ncp(const struct in6_addr &addr, uint8_t prefix_len, CallbackWithStatus cb)
 {
+	(void)addr;
+	(void)prefix_len;
+	(void)cb;
 	return;
 }
 
 void
 DummyNCPInstance::remove_unicast_address_on_ncp(const struct in6_addr &addr, uint8_t prefix_len, CallbackWithStatus cb)
 {
+	(void)addr;
+	(void)prefix_len;
+	(void)cb;
 	return;
 }
 
 void
 DummyNCPInstance::add_multicast_address_on_ncp(const struct in6_addr &addr, CallbackWithStatus cb)
 {
+	(void)addr;
+	(void)cb;
 	return;
 }
 
 void
 DummyNCPInstance::remove_multicast_address_on_ncp(const struct in6_addr &addr, CallbackWithStatus cb)
 {
+	(void)addr;
+	(void)cb;
 	return;
 }
 
-void 
-DummyNCPInstance::add_service_on_ncp(uint32_t enterprise_number, const Data &service_data, bool stable, 
+void
+DummyNCPInstance::add_service_on_ncp(uint32_t enterprise_number, const Data &service_data, bool stable,
 	const Data &server_data, CallbackWithStatus cb)
 {
+	(void)enterprise_number;
+	(void)server_data;
+	(void)service_data;
+	(void)stable;
+	(void)cb;
 	return;
 }
 
-void 
+void
 DummyNCPInstance::remove_service_on_ncp(uint32_t enterprise_number, const Data &service_data, CallbackWithStatus cb)
 {
+	(void)enterprise_number;
+	(void)service_data;
+	(void)cb;
 	return;
 }
 
@@ -132,6 +153,11 @@ void
 DummyNCPInstance::add_on_mesh_prefix_on_ncp(const struct in6_addr &addr, uint8_t prefix_len, uint8_t flags,
 	bool stable, CallbackWithStatus cb)
 {
+	(void)addr;
+	(void)prefix_len;
+	(void)flags;
+	(void)stable;
+	(void)cb;
 	return;
 }
 
@@ -139,6 +165,11 @@ void
 DummyNCPInstance::remove_on_mesh_prefix_on_ncp(const struct in6_addr &addr, uint8_t prefix_len, uint8_t flags,
 	bool stable, CallbackWithStatus cb)
 {
+	(void)addr;
+	(void)prefix_len;
+	(void)flags;
+	(void)stable;
+	(void)cb;
 	return;
 }
 
@@ -146,6 +177,11 @@ void
 DummyNCPInstance::add_route_on_ncp(const struct in6_addr &route, uint8_t prefix_len, RoutePreference preference,
 	bool stable, CallbackWithStatus cb)
 {
+	(void)route;
+	(void)prefix_len;
+	(void)preference;
+	(void)stable;
+	(void)cb;
 	return;
 }
 
@@ -153,5 +189,10 @@ void
 DummyNCPInstance::remove_route_on_ncp(const struct in6_addr &route, uint8_t prefix_len, RoutePreference preference,
 	bool stable, CallbackWithStatus cb)
 {
+	(void)route;
+	(void)prefix_len;
+	(void)preference;
+	(void)stable;
+	(void)cb;
 	return;
 }

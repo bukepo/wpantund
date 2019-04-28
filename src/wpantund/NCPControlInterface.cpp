@@ -261,6 +261,7 @@ NCPControlInterface::to_upper(const std::string &str)
 bool
 NCPControlInterface::translate_deprecated_property(std::string& key, boost::any& value)
 {
+	(void)value;
 	static std::map<std::string, std::string> prop_map;
 	static bool initialized = false;
 

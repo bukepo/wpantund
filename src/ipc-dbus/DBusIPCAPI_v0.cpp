@@ -224,6 +224,7 @@ ipc_append_networks(
 void
 DBusIPCAPI_v0::received_beacon(NCPControlInterface* interface, const WPAN::NetworkInstance& network)
 {
+	(void)interface;
 	mReceivedBeacons.push_back(network);
 }
 
@@ -258,6 +259,8 @@ DBusIPCAPI_v0::status_response_helper(
     int ret, NCPControlInterface* interface, DBusMessage *message
     )
 {
+	(void)ret;
+
 	DBusMessage *reply = dbus_message_new_method_return(message);
 
 	if (reply) {
@@ -494,7 +497,7 @@ DBusIPCAPI_v0::interface_form_handler(
 	}
 
 	if (ula_prefix_len) {
-		options[kWPANTUNDProperty_NestLabs_LegacyMeshLocalPrefix] = Data(ula_prefix, ula_prefix_len);
+		options[kWPANTUNDProperty_NestLabs_LegacyMeshLocalPrefix] = Data(ula_prefix, static_cast<size_t>(ula_prefix_len));
 	}
 
 	{	// The mesh local prefix can be set by setting it before forming.
@@ -637,8 +640,9 @@ DBusIPCAPI_v0::interface_config_gateway_handler(
 	int prefixLen = 0;
 	NCPControlInterface::OnMeshPrefixPriority priority;
 	NCPControlInterface::OnMeshPrefixFlags flags;
-	struct in6_addr addr = {};
+	struct in6_addr addr;
 
+	memset(&addr, 0, sizeof(addr));
 	dbus_message_ref(message);
 
 	dbus_message_get_args(
@@ -654,7 +658,7 @@ DBusIPCAPI_v0::interface_config_gateway_handler(
 		prefixLen = 16;
 	}
 
-	memcpy(addr.s6_addr, prefix, prefixLen);
+	memcpy(addr.s6_addr, prefix, static_cast<size_t>(prefixLen));
 
 	priority = NCPControlInterface::PREFIX_MEDIUM_PREFERENCE;
 
@@ -695,12 +699,13 @@ DBusIPCAPI_v0::interface_add_route_handler(
 ) {
 	DBusHandlerResult ret = DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
 	uint8_t *prefix = NULL;
-	struct in6_addr addr = {};
+	struct in6_addr addr;
 	int prefix_len = 0;
 	uint16_t domain_id = 0;
 	int16_t priority_raw;
 	NCPControlInterface::ExternalRoutePriority priority;
 
+	memset(&addr, 0, sizeof(addr));
 	dbus_message_ref(message);
 	dbus_message_get_args(
 		message, NULL,
@@ -714,7 +719,7 @@ DBusIPCAPI_v0::interface_add_route_handler(
 		prefix_len = 16;
 	}
 
-	memcpy(addr.s6_addr, prefix, prefix_len);
+	memcpy(addr.s6_addr, prefix, static_cast<size_t>(prefix_len));
 
 	priority = NCPControlInterface::ROUTE_MEDIUM_PREFERENCE;
 	if  (priority_raw > 0) {
@@ -744,10 +749,11 @@ DBusIPCAPI_v0::interface_remove_route_handler(
 ) {
 	DBusHandlerResult ret = DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
 	uint8_t *prefix = NULL;
-	struct in6_addr addr = {};
+	struct in6_addr addr;
 	int prefix_len = 0;
 	uint16_t domain_id = 0;
 
+	memset(&addr, 0, sizeof(addr));
 	dbus_message_ref(message);
 	dbus_message_get_args(
 		message, NULL,
@@ -760,7 +766,7 @@ DBusIPCAPI_v0::interface_remove_route_handler(
 		prefix_len = 16;
 	}
 
-	memcpy(addr.s6_addr, prefix, prefix_len);
+	memcpy(addr.s6_addr, prefix, static_cast<size_t>(prefix_len));
 
 	interface->remove_external_route(
 		&addr,
@@ -1139,7 +1145,7 @@ DBusIPCAPI_v0::interface_mfg_begin_test_handler(
 		);
 
 		mfg_interface->mfg_begin_test(
-			test_type,
+			static_cast<uint8_t>(test_type),
 			boost::bind(
 				&DBusIPCAPI_v0::CallbackWithStatus_Helper,
 				this,
@@ -1171,7 +1177,7 @@ DBusIPCAPI_v0::interface_mfg_end_test_handler(
 			DBUS_TYPE_INT16, &test_type
 		);
 
-		mfg_interface->mfg_end_test(test_type, boost::bind(&DBusIPCAPI_v0::CallbackWithStatus_Helper,this, _1, message));
+		mfg_interface->mfg_end_test(static_cast<uint8_t>(test_type), boost::bind(&DBusIPCAPI_v0::CallbackWithStatus_Helper,this, _1, message));
 
 		ret = DBUS_HANDLER_RESULT_HANDLED;
 	}
@@ -1201,7 +1207,7 @@ DBusIPCAPI_v0::interface_mfg_tx_packet_handler(
 		);
 
 		mfg_interface->mfg_tx_packet(
-			Data(packet_data, packet_length),
+			Data(packet_data, static_cast<size_t>(packet_length)),
 			repeat,
 			boost::bind(&DBusIPCAPI_v0::CallbackWithStatus_Helper,this, _1, message)
 		);
@@ -1219,6 +1225,8 @@ DBusIPCAPI_v0::message_handler(
     DBusMessage *           message
     )
 {
+	(void)connection;
+
 	if ((dbus_message_get_type(message) == DBUS_MESSAGE_TYPE_METHOD_CALL)
 		&& dbus_message_has_interface(message, WPAN_TUNNEL_DBUS_INTERFACE)
 		&& mInterfaceCallbackTable.count(dbus_message_get_member(message))
@@ -1508,6 +1516,8 @@ DBusIPCAPI_v0::ncp_state_changed(NCPControlInterface* interface)
 static void
 ObjectPathUnregisterFunction_cb(DBusConnection *connection, void *user_data)
 {
+	(void)connection;
+
 	delete (std::pair<NCPControlInterface*, DBusIPCAPI_v0*> *)user_data;
 }
 
@@ -1517,6 +1527,7 @@ DBusIPCAPI_v0::add_interface(NCPControlInterface* interface)
 	static const DBusObjectPathVTable ipc_interface_vtable = {
 		&ObjectPathUnregisterFunction_cb,
 		&DBusIPCAPI_v0::dbus_message_handler,
+		NULL, NULL, NULL, NULL
 	};
 
 	std::string name = interface->get_name();

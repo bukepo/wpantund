@@ -34,7 +34,7 @@
 #define IPV6_NETWORK_PREFIX_LENGTH              64
 
 #define IPV6_PREFIX_BITS_TO_BYTES(x)		((static_cast<uint8_t>(x)+7)/8)
-#define IPV6_PREFIX_BYTES_TO_BITS(x)		(static_cast<uint8_t>(x)*8)
+#define IPV6_PREFIX_BYTES_TO_BITS(x)		(static_cast<uint8_t>((x)*8))
 
 #define IPV6_MAX_LIFETIME					UINT32_MAX
 

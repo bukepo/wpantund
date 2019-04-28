@@ -39,7 +39,7 @@ static const arg_list_item_t poke_option_list[] = {
 	{'d', "data", NULL, "Value is binary data (in hex)"},
 	{'s', "string", NULL, "Value is a string"},
 	{'v', "value", "property-value", "Useful when the value starts with a '-'"},
-	{0}
+	{0, NULL, NULL, NULL}
 };
 
 int tool_cmd_poke(int argc, char* argv[])
@@ -87,7 +87,7 @@ int tool_cmd_poke(int argc, char* argv[])
 			goto bail;
 
 		case 't':
-			timeout = strtol(optarg, NULL, 0);
+			timeout = (int)strtol(optarg, NULL, 0);
 			break;
 
 		case 'd':
@@ -105,7 +105,7 @@ int tool_cmd_poke(int argc, char* argv[])
 	}
 
 	if (optind < argc) {
-		address = strtol(argv[optind], NULL, 0);
+		address = (uint32_t)strtol(argv[optind], NULL, 0);
 		optind++;
 	} else {
 		fprintf(stderr,	"%s: error: Missing required address parameter\n", argv[0]);
@@ -180,9 +180,9 @@ int tool_cmd_poke(int argc, char* argv[])
 			value = (char *)(&byte);
 			count = 1;
 		} else if (value_type == kValueType_String) {
-			count = strlen(value);
+			count = (uint16_t)strlen(value);
 		} else if (value_type == kValueType_Data) {
-			count = parse_string_into_data((uint8_t*)value,
+			count = (uint16_t)parse_string_into_data((uint8_t*)value,
 											strlen(value),
 											value);
 		} else {

@@ -109,7 +109,6 @@ NetworkRetain::set_network_retain_command(const std::string& command)
 		int stdout_fd_copy = dup(STDOUT_FILENO);
 		int stdin_fd_copy = dup(STDIN_FILENO);
 		FILE* stdin_copy = NULL;
-		FILE* stdout_copy = NULL;
 
 		dup2(STDERR_FILENO,STDOUT_FILENO);
 
@@ -119,7 +118,7 @@ NetworkRetain::set_network_retain_command(const std::string& command)
 		}
 
 		if (stdout_fd_copy >= 0) {
-			stdout_copy = fdopen(stdout_fd_copy, "w");
+			fdopen(stdout_fd_copy, "w");
 		}
 
 		// Double fork to avoid leaking zombie processes.

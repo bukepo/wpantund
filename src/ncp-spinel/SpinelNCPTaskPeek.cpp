@@ -93,6 +93,8 @@ nl::wpantund::SpinelNCPTaskPeek::vprocess_event(int event, va_list args)
 	if (event == EVENT_NCP(SPINEL_CMD_PEEK_RET))
 	{
 		spinel_prop_key_t prop_key = va_arg_small(args, spinel_prop_key_t);
+		(void)prop_key;
+
 		const uint8_t *frame_ptr = va_arg(args, const uint8_t*);
 		spinel_size_t frame_len = va_arg_small(args, spinel_size_t);
 		const uint8_t *data_ptr = NULL;

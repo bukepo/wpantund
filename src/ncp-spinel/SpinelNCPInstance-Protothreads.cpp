@@ -47,6 +47,7 @@ using namespace wpantund;
 int
 SpinelNCPInstance::vprocess_disabled(int event, va_list args)
 {
+	(void)args;
 	EH_BEGIN_SUB(&mSubPT);
 
 	while(!mEnabled) {
@@ -146,7 +147,6 @@ int
 SpinelNCPInstance::vprocess_resume(int event, va_list args)
 {
 	Data command;
-	bool is_commissioned = false;
 	int ret;
 
 	EH_BEGIN_SUB(&mSubPT);
@@ -203,6 +203,7 @@ on_error:
 int
 SpinelNCPInstance::vprocess_associated(int event, va_list args)
 {
+	(void)args;
 	// Conditions under which this protothread should be exited gracefully.
 	const bool should_exit = !mEnabled
 		|| !ncp_state_is_joining_or_joined(get_ncp_state());
@@ -244,6 +245,7 @@ on_error:
 int
 SpinelNCPInstance::vprocess_offline(int event, va_list args)
 {
+	(void)args;
 	// Conditions under which this protothread should be exited gracefully.
 	const bool should_exit = ncp_state_is_interface_up(get_ncp_state())
 		|| !mEnabled

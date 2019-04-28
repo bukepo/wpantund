@@ -548,12 +548,13 @@ get_network_from_iter(
 {
 	const char* new_state = NULL;
 	struct connman_network *network = NULL;
-	struct wpan_network_info_s network_info = {};
+	struct wpan_network_info_s network_info;
 	char network_identifier[256];
 	const char * group_identifier = network_identifier;
 	char hwaddr_str[256];
 	struct lowpan_network_s *network_data = NULL;
 
+	memset(&network_info, 0, sizeof(network_info));
 	if (parse_network_info_from_iter(&network_info, iter) != 0) {
 		goto bail;
 	}

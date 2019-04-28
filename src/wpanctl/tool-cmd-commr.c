@@ -117,7 +117,7 @@ static const struct commr_command_entry_t
 		"Send MGMT_COMMISSIONER_SET, <tlvs> as hex byte array"
 	},
 	{
-		-1
+		-1, NULL, NULL, 0, 0, NULL, NULL
 	}
 };
 
@@ -129,7 +129,7 @@ print_help(const char *prog_name)
 	static const arg_list_item_t commr_option_list[] = {
 		{'t', "timeout", "ms", "Set timeout period"},
 		{'c', "check-psk", NULL, "Checks validity/format of PSK for joiner add"},
-		{0}
+		{0, NULL, NULL, NULL}
 	};
 
 	const struct commr_command_entry_t *entry;
@@ -187,7 +187,7 @@ tool_cmd_commr(int argc, char* argv[])
 
 		switch (c) {
 		case 't':
-			timeout = strtol(optarg, NULL, 0);
+			timeout = (int)strtol(optarg, NULL, 0);
 			break;
 
 		case 'c':
@@ -607,7 +607,7 @@ tool_cmd_commr(int argc, char* argv[])
 			);
 		}
 
-		encode_data_into_string(tlvs, len, tlvs_str, sizeof(tlvs_str), 0);
+		encode_data_into_string(tlvs, (size_t)len, tlvs_str, sizeof(tlvs_str), 0);
 
 		snprintf(outcome_str, sizeof(outcome_str),
 			"Send MGMT_COMMISSIONER_%s with [%s]",

@@ -55,7 +55,7 @@ public:
 	}
 
 	void pop_front(size_t len) {
-		erase(begin(), begin()+len);
+		erase(begin(), begin() + static_cast<difference_type>(len));
 	}
 
 	uint8_t* data() {

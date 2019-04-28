@@ -36,7 +36,7 @@ static const arg_list_item_t permit_join_option_list[] = {
 	{'n', "network-wide", NULL, "Permit joining network-wide"},
 	{'c', "tcp", NULL, "Permit only TCP for commissioning traffic"},
 	{'d', "udp", NULL, "Permit only UDP for commissioning traffic"},
-	{0}
+	{0, NULL, NULL, NULL}
 };
 
 int tool_cmd_permit_join(int argc, char* argv[])
@@ -48,7 +48,7 @@ int tool_cmd_permit_join(int argc, char* argv[])
 	DBusMessage *message = NULL;
 	DBusMessage *reply = NULL;
 	DBusError error;
-	int32_t period = -1;
+	long period = -1;
 	dbus_bool_t network_wide = FALSE;
 	uint16_t commissioning_traffic_port = 0;
 	uint8_t commissioning_traffic_type = 0xFF;
@@ -80,7 +80,7 @@ int tool_cmd_permit_join(int argc, char* argv[])
 			goto bail;
 
 		case 't':
-			timeout = strtol(optarg, NULL, 0);
+			timeout = (int)strtol(optarg, NULL, 0);
 			break;
 
 		case 'n':
@@ -107,7 +107,7 @@ int tool_cmd_permit_join(int argc, char* argv[])
 	if (optind < argc) {
 		if (!commissioning_traffic_port) {
 			commissioning_traffic_port =
-			    strtol(argv[optind], NULL, 0);
+			    (uint16_t)strtol(argv[optind], NULL, 0);
 			optind++;
 		}
 	}
@@ -136,8 +136,6 @@ int tool_cmd_permit_join(int argc, char* argv[])
 	require_string(connection != NULL, bail, error.message);
 
 	{
-		DBusMessageIter iter;
-		DBusMessageIter list_iter;
 		char path[DBUS_MAXIMUM_NAME_LENGTH+1];
 		char interface_dbus_name[DBUS_MAXIMUM_NAME_LENGTH+1];
 		ret = lookup_dbus_name_from_interface(interface_dbus_name, gInterfaceName);
@@ -168,14 +166,14 @@ int tool_cmd_permit_join(int argc, char* argv[])
 
 		if (commissioning_traffic_port)
 			fprintf(stderr,
-			        "Permitting Joining on the current WPAN for %d seconds, commissioning traffic on %s port %d. . .\n",
+			        "Permitting Joining on the current WPAN for %ld seconds, commissioning traffic on %s port %d. . .\n",
 			        period,
 			        (commissioning_traffic_type ==
 			         6) ? "TCP" : (commissioning_traffic_type == 17) ? "UDP" : "TCP/UDP",
 			        commissioning_traffic_port);
 		else
 			fprintf(stderr,
-			        "Permitting Joining on the current WPAN for %d seconds. . .\n",
+			        "Permitting Joining on the current WPAN for %ld seconds. . .\n",
 			        period);
 
 		reply = dbus_connection_send_with_reply_and_block(

@@ -234,7 +234,7 @@ int parse_network_info_from_iter(struct wpan_network_info_s *network_info, DBusM
 				dbus_message_iter_get_fixed_array(&sub_iter, &value,
 				                                  &nelements);
 				if (nelements == 8)
-					memcpy(network_info->hwaddr, value, nelements);
+					memcpy(network_info->hwaddr, value, 8);
 			}
 		} else {
 #if DEBUG
@@ -627,7 +627,7 @@ node_type_str2int(const char *node_type)
 
 	} else {
 		// At this moment it should be a number
-		return strtol(node_type, NULL, 0);
+		return (uint16_t)strtol(node_type, NULL, 0);
 	}
 }
 

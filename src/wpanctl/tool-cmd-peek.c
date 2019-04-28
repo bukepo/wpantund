@@ -21,6 +21,7 @@
 #include <config.h>
 #endif
 
+#include <ctype.h>
 #include <getopt.h>
 #include "wpanctl-utils.h"
 #include "tool-cmd-peek.h"
@@ -37,7 +38,7 @@ static const arg_list_item_t peek_option_list[] = {
 	{'t', "timeout", "ms", "Set timeout period"},
 	{'c', "count", "bytes", "Number of bytes to peek"},
 	{'d', "data", "", "Show the result as a sequence of unformatted hex bytes"},
-	{0}
+	{0, NULL, NULL, NULL}
 };
 
 static void dump_data(const uint8_t *data_ptr, uint16_t data_len)
@@ -125,11 +126,11 @@ int tool_cmd_peek(int argc, char* argv[])
 			goto bail;
 
 		case 't':
-			timeout = strtol(optarg, NULL, 0);
+			timeout = (int)strtol(optarg, NULL, 0);
 			break;
 
 		case 'c':
-			count = strtol(optarg, NULL, 0);
+			count = (uint16_t)strtol(optarg, NULL, 0);
 			break;
 
 		case 'd':
@@ -139,7 +140,7 @@ int tool_cmd_peek(int argc, char* argv[])
 	}
 
 	if (optind < argc) {
-		address = strtol(argv[optind], NULL, 0);
+		address = (uint32_t)strtol(argv[optind], NULL, 0);
 		optind++;
 	} else {
 		fprintf(stderr,	"%s: error: Missing required address parameter\n", argv[0]);
@@ -244,7 +245,7 @@ int tool_cmd_peek(int argc, char* argv[])
 			}
 			fprintf(stdout, "\n");
 		} else {
-			dump_data(data_ptr, data_len);
+			dump_data(data_ptr, (uint16_t)data_len);
 		}
 	}
 

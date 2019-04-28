@@ -48,7 +48,7 @@ int tool_cmd_mfg(int argc, char *argv[])
 
 	{
 		char *buf_ptr = command;
-		int buf_len = sizeof(command);
+		size_t buf_len = sizeof(command);
 		int index;
 		int len;
 
@@ -64,14 +64,14 @@ int tool_cmd_mfg(int argc, char *argv[])
 
 			require(len >= 0, bail);
 
-			if (len >= buf_len) {
+			if (len >= (int)buf_len) {
 				fprintf(stderr, "%s: error: command string exceeds max size %lu \n", argv[0], sizeof(command));
 				ret = ERRORCODE_BADARG;
 				goto bail;
 			}
 
 			buf_ptr += len;
-			buf_len -= len;
+			buf_len -= (unsigned long)len;
 		}
 	}
 
@@ -81,7 +81,6 @@ int tool_cmd_mfg(int argc, char *argv[])
 
 	{
 		DBusMessageIter iter;
-		DBusMessageIter list_iter;
 		char path[DBUS_MAXIMUM_NAME_LENGTH+1];
 		char interface_dbus_name[DBUS_MAXIMUM_NAME_LENGTH+1];
 

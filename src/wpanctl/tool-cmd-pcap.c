@@ -41,7 +41,7 @@ static const arg_list_item_t pcap_option_list[] = {
 	{'h', "help", NULL, "Print Help"},
 	{'t', "timeout", "ms", "Set timeout period"},
 	{'f', NULL, NULL, "Allow packet capture to controlling TTY"},
-	{0}
+	{0, NULL, NULL, NULL}
 };
 
 
@@ -152,7 +152,6 @@ bail:
 int
 tool_cmd_pcap(int argc, char *argv[])
 {
-	static const int set = 1;
 	int ret = 0;
 	int timeout = 10 * 1000;
 
@@ -193,7 +192,7 @@ tool_cmd_pcap(int argc, char *argv[])
 			break;
 
 		case 't':
-			timeout = strtol(optarg, NULL, 0);
+			timeout = (int)strtol(optarg, NULL, 0);
 			break;
 		}
 	}
@@ -296,7 +295,7 @@ tool_cmd_pcap(int argc, char *argv[])
 		}
 
 		// Write out the buffer to our file descriptor
-		buffer_len = write(fd_out, buffer, buffer_len);
+		buffer_len = write(fd_out, buffer, (size_t)buffer_len);
 		if (buffer_len <= 0) {
 			break;
 		}

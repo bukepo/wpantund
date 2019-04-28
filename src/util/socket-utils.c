@@ -87,6 +87,7 @@ static struct {
 static void
 system_socket_table_close_alarm_(int sig)
 {
+	(void)sig;
 	static const char message[] = "\nclose_super_socket: Unable to terminate child in a timely manner, watchdog fired\n";
 
 	// Can't use syslog here, write to stderr instead.
@@ -98,7 +99,7 @@ system_socket_table_close_alarm_(int sig)
 static void
 system_socket_table_atexit_(void)
 {
-	int i;
+	size_t i;
 
 	for (i = 0; i < sizeof(gSystemSocketTable)/sizeof(gSystemSocketTable[0]); i++) {
 		if (gSystemSocketTable[i].pid != 0) {
@@ -111,7 +112,7 @@ static void
 system_socket_table_add_(int fd, pid_t pid)
 {
 	static bool did_init = false;
-	int i;
+	size_t i;
 
 	if (!did_init) {
 		atexit(&system_socket_table_atexit_);
@@ -138,7 +139,7 @@ system_socket_table_add_(int fd, pid_t pid)
 int
 close_super_socket(int fd)
 {
-	int i;
+	size_t i;
 	int ret;
 	for (i = 0; i < sizeof(gSystemSocketTable)/sizeof(gSystemSocketTable[0]); i++) {
 		if ( gSystemSocketTable[i].fd == fd

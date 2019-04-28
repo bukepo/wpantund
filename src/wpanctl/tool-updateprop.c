@@ -38,7 +38,7 @@ static const arg_list_item_t insertprop_option_list[] = {
 	{'d', "data", NULL, "Value is binary data (in hex)"},
 	{'s', "string", NULL, "Value is a string"},
 	{'v', "value", "property-value", "Useful when the value starts with a '-'"},
-	{0}
+	{0, NULL, NULL, NULL}
 };
 
 int tool_updateprop(const char *dbus_method_name, int argc, char* argv[])
@@ -86,7 +86,7 @@ int tool_updateprop(const char *dbus_method_name, int argc, char* argv[])
 			goto bail;
 
 		case 't':
-			timeout = strtol(optarg, NULL, 0);
+			timeout = (int)strtol(optarg, NULL, 0);
 			break;
 
 		case 'd':
@@ -150,8 +150,6 @@ int tool_updateprop(const char *dbus_method_name, int argc, char* argv[])
 	require_string(connection != NULL, bail, error.message);
 
 	{
-		DBusMessageIter iter;
-		DBusMessageIter list_iter;
 		char path[DBUS_MAXIMUM_NAME_LENGTH+1];
 		char interface_dbus_name[DBUS_MAXIMUM_NAME_LENGTH+1];
 		ret = lookup_dbus_name_from_interface(interface_dbus_name, gInterfaceName);

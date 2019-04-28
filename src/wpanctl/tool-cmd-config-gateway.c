@@ -45,7 +45,7 @@ static const arg_list_item_t config_gateway_option_list[] = {
 	 "Set the valid lifetime (Default: infinite)"},
 	{'d', "default", NULL, "Indicates that we can be a default route"},
 	{'P', "priority", NULL, "(>0 for high, 0 for medium, <0 for low) Assign route priority"},
-	{0}
+	{0, NULL, NULL, NULL}
 };
 
 int tool_cmd_config_gateway(int argc, char* argv[])
@@ -65,11 +65,11 @@ int tool_cmd_config_gateway(int argc, char* argv[])
 	uint32_t preferredLifetime = 0xFFFFFFFF;
 	uint32_t validLifetime = 0xFFFFFFFF;
 	const char* prefix = NULL;
-	uint8_t prefix_length = 64;
 	char address_string[INET6_ADDRSTRLEN] = "::";
-	uint8_t prefix_bytes[16] = {};
+	uint8_t prefix_bytes[16];
 	uint8_t *addr = prefix_bytes;
 
+	memset(prefix_bytes, 0, sizeof(prefix_bytes));
 	dbus_error_init(&error);
 
 	while (1) {
@@ -102,7 +102,7 @@ int tool_cmd_config_gateway(int argc, char* argv[])
 			break;
 
 		case 't':
-			timeout = strtol(optarg, NULL, 0);
+			timeout = (int)strtol(optarg, NULL, 0);
 			break;
 
 		case 'p':
@@ -147,8 +147,6 @@ int tool_cmd_config_gateway(int argc, char* argv[])
 	require_string(connection != NULL, bail, error.message);
 
 	{
-		DBusMessageIter iter;
-		DBusMessageIter list_iter;
 		char path[DBUS_MAXIMUM_NAME_LENGTH+1];
 		char interface_dbus_name[DBUS_MAXIMUM_NAME_LENGTH+1];
 		ret = lookup_dbus_name_from_interface(interface_dbus_name, gInterfaceName);

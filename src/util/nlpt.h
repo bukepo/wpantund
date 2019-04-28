@@ -34,7 +34,7 @@
 #define NLPT_INIT(nlpt) do { memset(nlpt, 0, sizeof(*nlpt)); PT_INIT(&(nlpt)->pt); _nlpt_init(nlpt); } while (0)
 
 #define NLPT_THREAD(name_args)          PT_THREAD(name_args)
-#define NLPT_BEGIN(nlpt)                PT_BEGIN(&(nlpt)->pt)
+#define NLPT_BEGIN(nlpt)                PT_BEGIN(&(nlpt)->pt); (void)PT_YIELD_FLAG
 #define NLPT_END(nlpt)                  PT_END(&(nlpt)->pt)
 #define NLPT_SPAWN(nlpt, child, thread) PT_SPAWN(&(nlpt)->pt, &(child)->pt, thread)
 #define NLPT_WAIT_UNTIL(nlpt, cond)     PT_WAIT_UNTIL(&(nlpt)->pt, cond)

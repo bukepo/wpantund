@@ -52,6 +52,7 @@ SpinelNCPVendorCustom::~SpinelNCPVendorCustom()
 bool
 SpinelNCPVendorCustom::setup_property_supported_by_class(const std::string& prop_name)
 {
+	(void)prop_name;
 	return false;
 }
 
@@ -96,6 +97,7 @@ SpinelNCPVendorCustom::property_get_value(const std::string& key, CallbackWithSt
 void
 SpinelNCPVendorCustom::property_set_value(const std::string& key, const boost::any& value, CallbackWithStatus cb)
 {
+	(void)value;
 	if (strcaseequal(key.c_str(), "__CustomKeyHere__")) {
 		cb(kWPANTUNDStatus_Ok);
 
@@ -107,6 +109,7 @@ SpinelNCPVendorCustom::property_set_value(const std::string& key, const boost::a
 void
 SpinelNCPVendorCustom::property_insert_value(const std::string& key, const boost::any& value, CallbackWithStatus cb)
 {
+	(void)value;
 	if (strcaseequal(key.c_str(), "__CustomKeyHere__")) {
 		cb(kWPANTUNDStatus_Ok);
 
@@ -118,6 +121,7 @@ SpinelNCPVendorCustom::property_insert_value(const std::string& key, const boost
 void
 SpinelNCPVendorCustom::property_remove_value(const std::string& key, const boost::any& value, CallbackWithStatus cb)
 {
+	(void)value;
 	if (strcaseequal(key.c_str(), "__CustomKeyHere__")) {
 		cb(kWPANTUNDStatus_Ok);
 
